@@ -41,7 +41,7 @@ export default class App extends Component<{}> {
         return (
             <View style={styles.container} >
                 <Image source={require('./image/icon.png')} style={styles.iconStyle }/>
-                <TextInput placeholde={'帐号/手机号'} style={styles.textInputStyle }/>
+                <TextInput placeholde={'帐号/手机号aaa'} style={styles.textInputStyle }/>
                 <TextInput placeholde={'密码'} secureTextEntry={true} password={true}style={styles.textInputStyle } />
                 <TouchableOpacity activeOpacity={0.5}
                                   onPress={()=>this.renderPress('')}
