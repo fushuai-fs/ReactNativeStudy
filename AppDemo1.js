@@ -11,7 +11,8 @@ import {
     Text,
     TextInput,
     View,
-    Image,TextInput
+    Image,
+    TouchableOpacity
 } from 'react-native';
 
 // 全局属性
@@ -36,40 +37,49 @@ export default class AppDemo1 extends Component<{}> {
     }
     render() {
         return (
-            <View style={styles.container}>
-               <View>
-                   <Text style={styles.welcome}>
-                       帐号
-                   </Text>
-                   <TextInput  style={styles.testInput } />
-
-                   <Text style={styles.instructions}>
-
-                   </Text>
-               </View>
+            <View style={styles.container} >
+                <Image source={require('./image/icon.png')} style={styles.iconStyle }/>
+                <TextInput placeholde={'帐号/手机号'} style={styles.textInputStyle }/>
+                <TextInput placeholde={'密码'} secureTextEntry={true} password={true}style={styles.textInputStyle } />
+                <TouchableOpacity activeOpacity={0.5}
+                                  onPress={()=>this.renderPress('')}
+                >
+                    <View style={ styles.loginViewStyle } >
+                        <Text style ={{color:'white'}} >登录</Text>
+                    </View>
+                </TouchableOpacity>
+                <View>
+                    {/*<Text>{this.state.title}</Text>*/}
+                </View>
+                <View style={ styles.setingViewStyle }>
+                    <Text>手机验证码登录</Text>
+                </View>
             </View>
         );
     }
 
-
-    componentDidMount() {
-        return fetch(GlobalProps.LoginUrl, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-            },
-            body: 'Method=Login&SupplierCode=25887708&UserName=fushuai&PassWord=fushuai'
-        })
-            // .then((response) => response.json())
-            .then((response)=>{
-              if(response.ok){
-                  alert("123123123");
-              }
-            })
-            .catch((error) => {
-                alert(error+ GlobalProps.LoginUrl);
-            });
+    renderPress(event){
+        alert('点击了啊','');
     }
+    // 初始化
+    // componentDidMount() {
+    //     return fetch(GlobalProps.LoginUrl, {
+    //         method: 'POST',
+    //         headers: {
+    //             'Content-Type': 'application/x-www-form-urlencoded',
+    //         },
+    //         body: 'Method=Login&SupplierCode=25887708&UserName=fushuai&PassWord=fushuai'
+    //     })
+    //         // .then((response) => response.json())
+    //         .then((response)=>{
+    //           if(response.ok){
+    //               alert("123123123");
+    //           }
+    //         })
+    //         .catch((error) => {
+    //             alert(error+ GlobalProps.LoginUrl);
+    //         });
+    // }
 
     dealWithData()
     {
