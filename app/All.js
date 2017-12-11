@@ -27,6 +27,9 @@ var hMargin=25;
 // ES6
 // noinspection JSAnnotator
 export default class All extends Component<{}> {
+    static defaultProps={
+        name:'xxxx'
+    }
     constructor(props) {
         super(props);
         this.state = {

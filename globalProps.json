@@ -1,0 +1,4 @@
+{
+  "LoginUrl":"http://172.16.1.51:95/App/Supplier.ashx",
+  "test":"http://192.168.23.1:25840/App/Supplier.ashx"
+}
