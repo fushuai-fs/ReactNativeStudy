@@ -83,7 +83,7 @@ export default class Login extends Component<{}> {
                     />
                 </View>
                 <TouchableOpacity activeOpacity={0.5}
-                                  onPress={()=>this.renderPress('')}
+                                  onPress={this.renderPress.bind(this)}
                 >
                     <View style={ styles.loginViewStyle } >
                         <Text style ={[styles.textsStyle,{color:'white'}]} >{this.state.loginText }</Text>
@@ -98,48 +98,56 @@ export default class Login extends Component<{}> {
             </View>
         );
     }
-    renderPress(event){
+
+    renderPress(){
         var navigatorOrigin=this.props.navigator;
+        alert(navigatorOrigin);
         var supplierCode=this.state.SupplierCode; var userName=this.state.UserName;var password=this.state.Password;
         this.setState({
             loginText:'正在登录...'
         });
-        // alert(this.state.UserName+'---'+this.state.Password);
-        return fetch(GlobalProps.LoginUrl, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
+        navigatorOrigin.push({
+            component: Main,
+            passProps: {
+                name: ''
             },
-            body: 'Method=Login&SupplierCode='+supplierCode+'&UserName='+userName+'&PassWord='+password
+            type: 'Normal'
         })
-        // .then((response) => response.json())
-            .then((response)=>{
-                this.setState({
-                    loginText:'登 录'
-                });
-                alert(response.ok);
-                if(response.ok){
-                    var txt =response.text();
-                    if(txt=='')
-                    {
-                        // navigatorOrigin.push({
-                        //     component:Main
-                        // })
-                    }else
-                    {// 登录失败
-                        this.setState({
-                            loginDesc:txt,
-                        });
-                    }
-                }
-
-            })
-            .catch((error) => {
-                // alert(error+ GlobalProps.LoginUrl);
-                this.setState({
-                    loginText:'登 录'
-                });
-            });
+        // alert(this.state.UserName+'---'+this.state.Password);
+        // return fetch(GlobalProps.LoginUrl, {
+        //     method: 'POST',
+        //     headers: {
+        //         'Content-Type': 'application/x-www-form-urlencoded',
+        //     },
+        //     body: 'Method=Login&SupplierCode='+supplierCode+'&UserName='+userName+'&PassWord='+password
+        // })
+        // // .then((response) => response.json())
+        //     .then((response)=>{
+        //         this.setState({
+        //             loginText:'登 录'
+        //         });
+        //         alert(response.ok);
+        //         if(response.ok){
+        //             var txt =response.text();
+        //             if(txt=='')
+        //             {
+        //                 // navigatorOrigin.push({
+        //                 //     component:Main
+        //                 // })
+        //             }else
+        //             {// 登录失败
+        //                 this.setState({
+        //                     loginDesc:txt,
+        //                 });
+        //             }
+        //         }
+        //     })
+        //     .catch((error) => {
+        //         // alert(error+ GlobalProps.LoginUrl);
+        //         this.setState({
+        //             loginText:'登 录'
+        //         });
+        //     });
     }
     // renderPress1(event){
     //         return fetch(GlobalProps.LoginUrl, {
