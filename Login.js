@@ -7,10 +7,13 @@ import {
     TextInput,
     View,
     Image,TouchableOpacity
-,Navigator
-} from 'react-native';
 
-import Main from './app/Main.js';
+} from 'react-native';
+var JSON5 = require('json5');
+import { StackNavigator,} from 'react-navigation';
+
+ import Main from './app/Main.js';
+
 // const instructions = Platform.select({
 //     ios: 'Press Cmd+R to reload,\n' +
 //     'Cmd+D or shake for dev menu',
@@ -38,19 +41,21 @@ var hMargin=25;
 // });
 
 
+
 // ES6
 // noinspection JSAnnotator
 export default class Login extends Component<{}> {
-    static navigationOptions = {
-        title: 'Home',
-    }
+    static defaultProps = {
+    };  // 注意这里有分号
+    static propTypes = {
+    };  // 注意这里有分号
 
     constructor (props) {
         super (props)
         this.state = {
-            SupplierCode:'',
-            UserName: '',
-            Password: '',
+            SupplierCode:'25887708',
+            UserName: 'fushuai',
+            Password: 'fushuai',
             loaded: false,
             loginText:'登 录',
             loginDesc:''
@@ -58,6 +63,11 @@ export default class Login extends Component<{}> {
         }
     }
     render() {
+        // return(  <Main/>)
+      if(this.state.loaded)
+      {
+        return(  <Main/>)
+      }
         return (
             <View style={styles.container} >
                 <Image source={require('./image/icon.png')} style={styles.iconStyle }/>
@@ -89,84 +99,85 @@ export default class Login extends Component<{}> {
                         <Text style ={[styles.textsStyle,{color:'white'}]} >{this.state.loginText }</Text>
                     </View>
                 </TouchableOpacity>
-                <View>
-                    <Text style={{color:'red'}}>{this.state.loginDesc}</Text>
-                </View>
-                <View style={ styles.setingViewStyle }>
-                    <Text>手机验证码登录</Text>
-                </View>
+                {/*<View>*/}
+                    {/*<Text style={{color:'red'}}>{this.state.loginDesc}</Text>*/}
+                {/*</View>*/}
+                {/*<View style={ styles.setingViewStyle }>*/}
+                    {/*<Text>手机验证码登录</Text>*/}
+                {/*</View>*/}
             </View>
         );
     }
 
-    renderPress(){
-        var navigatorOrigin=this.props.navigator;
-        alert(navigatorOrigin);
+    renderPress=()=>{
+     //    var _navigation =  this.props.navigation;//
+       // this.props.navigation.navigate('Main')
+
         var supplierCode=this.state.SupplierCode; var userName=this.state.UserName;var password=this.state.Password;
         this.setState({
             loginText:'正在登录...'
         });
-        navigatorOrigin.push({
-            component: Main,
-            passProps: {
-                name: ''
+            var bodys= 'Method=Login&SupplierCode='+supplierCode+'&UserName='+userName+'&PassWord='+password;
+        //    alert(bodys);
+       // alert(GlobalProps.LoginUrl);
+       // alert(supplierCode+'---'+userName+'==='+password);
+        return fetch(GlobalProps.LoginUrl, {
+            method: 'POST',
+            headers: {
+
+                 // 'Accept': 'application/json',
+                'Content-Type': 'application/x-www-form-urlencoded',
             },
-            type: 'Normal'
+            body:bodys
         })
-        // alert(this.state.UserName+'---'+this.state.Password);
-        // return fetch(GlobalProps.LoginUrl, {
-        //     method: 'POST',
-        //     headers: {
-        //         'Content-Type': 'application/x-www-form-urlencoded',
-        //     },
-        //     body: 'Method=Login&SupplierCode='+supplierCode+'&UserName='+userName+'&PassWord='+password
-        // })
-        // // .then((response) => response.json())
-        //     .then((response)=>{
-        //         this.setState({
-        //             loginText:'登 录'
-        //         });
-        //         alert(response.ok);
-        //         if(response.ok){
-        //             var txt =response.text();
-        //             if(txt=='')
-        //             {
-        //                 // navigatorOrigin.push({
-        //                 //     component:Main
-        //                 // })
-        //             }else
-        //             {// 登录失败
-        //                 this.setState({
-        //                     loginDesc:txt,
-        //                 });
-        //             }
-        //         }
-        //     })
-        //     .catch((error) => {
-        //         // alert(error+ GlobalProps.LoginUrl);
-        //         this.setState({
-        //             loginText:'登 录'
-        //         });
-        //     });
+          .then((response) => response.json())
+            .then((responsejson)=>{
+                this.setState({
+                    loginText:'登 录'
+                });
+
+                // var json = response.json();
+                var txt = "1";
+              alert(responsejson.name);
+              if(responsejson.name==='123')
+              {
+                    this.setState({
+                        loaded:true,
+                    });
+              }
+                   //alert(JSON5.stringify(responsejson.name));
+                 // alert(response.ok);
+              //  alert(response.status);
+              //   if(response.status ===200){
+              //       if(txt=='')
+              //       {
+              //           // alert(txt.toString());
+              //
+              //         //  alert('txt');
+              //
+              //           // this.props.navigation.navigate('Main')
+              //       //    this.props.navigation.dispatch(navigateAction)
+              //           this.setState({
+              //               loaded:true,
+              //           });
+              //       //    _navigation.navigate('Main')
+              //
+              //       }else
+              //       {// 登录失败
+              //           this.setState({
+              //               loginDesc:txt,
+              //           });
+              //       }
+              //   }
+            })
+            .catch((error) => {
+                  alert(error);
+                this.setState({
+                    loginText:'登 录'
+                });
+            });
     }
-    // renderPress1(event){
-    //         return fetch(GlobalProps.LoginUrl, {
-    //             method: 'POST',
-    //             headers: {
-    //                 'Content-Type': 'application/x-www-form-urlencoded',
-    //             },
-    //             body: 'Method=Login&SupplierCode=25887708&UserName=fushuai&PassWord=fushuai'
-    //         })
-    //             // .then((response) => response.json())
-    //             .then((response)=>{
-    //               if(response.ok){
-    //                   alert("123123123");
-    //               }
-    //             })
-    //             .catch((error) => {
-    //                 alert(error+ GlobalProps.LoginUrl);
-    //             });
-    // }
+
 
 }
 
