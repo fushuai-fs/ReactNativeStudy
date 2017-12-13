@@ -5,11 +5,13 @@ import { StackNavigator } from 'react-navigation';
 //页面
 import Login from './Login.js';
 import Main from './app/Main.js';
+import Mine from './app/Mine.js';
 
 // 导航
   const App = StackNavigator({
-          Home : { screen: Login },
-          Main : { screen: Main }
+      Home : { screen: Login },
+      Main : { screen: Main },
+      Mine : { screen: Mine },
       },{
           title:'', headerMode: 'none',
       }

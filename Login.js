@@ -121,6 +121,7 @@ export default class Login extends Component<{}> {
               if(responsejson.name==='123')
               {
                   _navigate('Main');
+
               } else
               {
                   this.setState({

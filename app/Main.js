@@ -45,19 +45,21 @@ export default  class Main extends Component<{}> {
     };
 
     render() {
+        const { navigate } = this.props.navigation;
         return (
             <View style={styles.container}>
                 <TabNavigator style={{width:deviceW}}
                               tintColor='orange'
                 >
                     <TabNavigator.Item
+                        title="所有订单"
                     selected={this.state.selectedTab === 'all'}
-                    title="所有订单"
                     selectedTitleStyle={{color: "#014af0"}}
                     renderIcon={() => <Icon name="home" size={px2dp(15)} color="#666"/>}
                     renderSelectedIcon={() => <Icon name="home" size={px2dp(10)} color="#3496f0"/>}
                     badgeText="1"
-                    onPress={() => this.setState({selectedTab: 'all'})}>
+                    onPress={() => this.renderfun(navigate,'all') }>
+
                    <All/>
                 </TabNavigator.Item>
                 <TabNavigator.Item
@@ -85,6 +87,10 @@ export default  class Main extends Component<{}> {
 
             </View>
         );
+    }
+    renderfun(navigate,selected){
+        this.setState({selectedTab: selected})
+        //navigate('Mine');
     }
 
 

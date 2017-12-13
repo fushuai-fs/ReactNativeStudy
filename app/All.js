@@ -10,11 +10,11 @@ import {
 ,FlatList
 ,ListView
 ,ActivityIndicator
+,ScrollView
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome'
 
-// 导入json数据
-// var testData = require('./testData.json');
+var GlobalProps = require('../globalProps.json');
 
 var Dimensions=require('Dimensions');
 var {width}= Dimensions.get('window');
@@ -24,11 +24,12 @@ var boxW=100;
 var vMargin = (width-cols*boxW)/(cols+1);
 var hMargin=25;
 
+
+import  CommonCell from './CommonCell.js';
 // ES6
 // noinspection JSAnnotator
 export default class All extends Component<{}> {
     static defaultProps={
-        name:'xxxx'
     }
     constructor(props) {
         super(props);
@@ -39,21 +40,36 @@ export default class All extends Component<{}> {
     render() {
         return (
             <View style={styles.container} >
-                <Text style={styles.welcome}>
-                    Home
-                </Text>
+                <ScrollView>
+                    <View style={styles.orderItems}>
+                        <CommonCell/>
+                    </View>
+                    <View style={styles.orderItems}>
+                        <CommonCell/>
+                    </View>
+                    <View style={styles.orderItems}>
+                        <CommonCell/>
+                    </View>
+                    <View style={styles.orderItems}>
+                        <CommonCell/>
+                    </View>
+                    <View style={styles.orderItems}>
+                        <CommonCell/>
+                    </View>
+                </ScrollView>
             </View>
         );
     }
 
     componentDidMount() {
-        return fetch('https://facebook.github.io/react-native/movies.json')
+        return fetch(GlobalProps.LoginUrl)
             .then((response) => response.json())
             .then((responseJson) => {
-                let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+           // alert(responseJson);
+              //  let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
                 this.setState({
                     isLoading: false,
-                    dataSource: ds.cloneWithRows(responseJson.movies),
+                    //dataSource: ds.cloneWithRows(responseJson.movies),
                 }, function() {
                     // do something with new state
                 });
@@ -76,6 +92,9 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor:'#dddddd',
         alignItems: 'center',
+    },
+    orderItems:{
+        paddingBottom:5,
     },
     textInputStyle:{
         minWidth:width-70, height:38, backgroundColor:'white',
