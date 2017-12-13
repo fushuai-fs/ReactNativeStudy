@@ -77,7 +77,8 @@ export default class CommonCell extends Component<{}> {
 
 const styles = StyleSheet.create({
     container: {
-        padding:10,
+        paddingTop:10,paddingBottom:10,
+        paddingLeft:15,paddingRight:10,
 
         backgroundColor:'white',
         alignItems: 'flex-start',
