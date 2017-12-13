@@ -11,7 +11,6 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome'
 
-var GlobalProps = require('../globalProps.json');
 
 var Dimensions=require('Dimensions');
 var {width}= Dimensions.get('window');
@@ -25,28 +24,29 @@ var hMargin=25;
 // noinspection JSAnnotator
 export default class CommonCell extends Component<{}> {
     static defaultProps={
-
+        Data:{}
     }
     constructor(props) {
         super(props);
         this.state = {
-            isLoading: true
         }
     }
     render() {
+       // alert(JSON.stringify(this.props.Data));
+        const  _data=this.props.Data.item;
         return (
-            <View style={styles.container} >
-                <Text style={styles.hotelroom}>新加坡丽思卡尔顿美年酒店(The Ritz-Carlton, Millenia Singapore)</Text>
-                <Text style={styles.hotelroom}>豪华房（含早）(双床)(特价)(内宾)</Text>
+            <View style={styles.container}>
+                <Text style={styles.hotelroom}>{_data.HotelNameCN+'('+_data.HotelNameGB+')' }</Text>
+                <Text style={styles.hotelroom}>{_data.CheckIn+'('+_data.CheckOut+')'}</Text>
                 <View style={styles.orderinfo}>
-                    <Text style={styles.orderitem}>2017-12-11至2017-12-13</Text>
-                    <Text style={styles.orderitem}>2晚</Text>
-                    <Text style={[styles.orderitem,{flex:1,}]}>1间</Text>
-                    <Text style={styles.orderitem}>fushuai</Text>
+                    <Text style={styles.orderitem}>{_data.CheckIn} 至 {_data.CheckOut}</Text>
+                    <Text style={styles.orderitem}> {_data.rooms}晚</Text>
+                    <Text style={[styles.orderitem,{flex:1,}]}> {_data.rooms}间</Text>
+                    <Text style={styles.orderitem}>{_data.Guests}</Text>
                 </View>
                 <View style={[styles.orderinfo,]}>
-                    <Text style={{color:'gray',flex:1}}>订单号{'2324242342'}</Text>
-                    <Text style={{color:'orange'}}>CNY{'345'}</Text>
+                    <Text style={{color:'gray',flex:1}}>订单号{_data.OrderID}</Text>
+                    <Text style={{color:'orange'}}>CNY{_data.Payments}</Text>
                 </View>
                 <View style={[styles.orderinfo,]}>
                     <Text style={[styles.orderstate,{flex:1}]}>未发单到酒店</Text>
@@ -78,7 +78,7 @@ export default class CommonCell extends Component<{}> {
 const styles = StyleSheet.create({
     container: {
         paddingTop:10,paddingBottom:10,
-        paddingLeft:15,paddingRight:10,
+        paddingLeft:25,paddingRight:10,
 
         backgroundColor:'white',
         alignItems: 'flex-start',

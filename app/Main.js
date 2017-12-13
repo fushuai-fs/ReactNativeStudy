@@ -39,12 +39,17 @@ function px2dp(px) {
 // ES6
 // noinspection JSAnnotator
 export default  class Main extends Component<{}> {
-
+    static defaultProps={
+        SupplierCode:'',UserName:'',OrderStatus:''
+    }
     state= {
         selectedTab: 'all'
     };
 
     render() {
+        SupplierCode=  this.props.navigation.state.params.SupplierCode;
+        UserName=  this.props.navigation.state.params.UserName;
+
         const { navigate } = this.props.navigation;
         return (
             <View style={styles.container}>
@@ -60,7 +65,7 @@ export default  class Main extends Component<{}> {
                     badgeText="1"
                     onPress={() => this.renderfun(navigate,'all') }>
 
-                   <All/>
+                   <All SupplierCode={this.props.SupplierCode} UserName={this.props.UserName}/>
                 </TabNavigator.Item>
                 <TabNavigator.Item
                     selected={this.state.selectedTab === 'UnConfirm'}

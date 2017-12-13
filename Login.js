@@ -12,7 +12,7 @@ import {
 // var JSON5 = require('json5');
 import { StackNavigator,} from 'react-navigation';
 
- import Main from './app/Main.js';
+ // import Main from './app/Main.js';
 
 // const instructions = Platform.select({
 //     ios: 'Press Cmd+R to reload,\n' +
@@ -120,8 +120,7 @@ export default class Login extends Component<{}> {
             //  alert(responsejson.name+'qwert');
               if(responsejson.name==='123')
               {
-                  _navigate('Main');
-
+                  _navigate('Main',{SupplierCode:supplierCode,UserName:userName,});
               } else
               {
                   this.setState({
