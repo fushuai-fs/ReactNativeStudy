@@ -119,7 +119,7 @@ export default class Login extends Component<{}> {
     renderPress=(navigate)=>{
         // fetch 返回结果最好使用json
        var _navigate= navigate; // 作用域问题定义变量
-
+        _navigate('MyApp',{SupplierCode:supplierCode,UserName:userName,});
         var supplierCode=this.state.SupplierCode; var userName=this.state.UserName;var password=this.state.Password;
         this.setState({
             loginText:'正在登录...'
@@ -143,7 +143,7 @@ export default class Login extends Component<{}> {
               {
                     // this.setState({logined:true});
                   // _navigate.dispatch(resetAction);
-                  _navigate('Main',{SupplierCode:supplierCode,UserName:userName,});
+                  _navigate('MyApp',{SupplierCode:supplierCode,UserName:userName,});
               } else
               {
                   this.setState({

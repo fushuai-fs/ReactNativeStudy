@@ -48,14 +48,27 @@ import Detail from "./Detail";
             dataArray: null,
             dataStrArr:'',
             tag:'',
-            OrderID:''
+            OrderID:'',
+            SupplierCode:'',
+            UserName: '',
         }
     }
-    componentWillMount(){
-        //alert(this.props.SupplierCode)
-        //请求数据
-        this.fetchData();
-    }
+      // render() 方法前运行
+      componentWillMount(){
+          //  this.props.navigation.dispatch(resetAction);
+          this.setState({
+              SupplierCode: this.props.navigation.state.params.SupplierCode,
+              UserName :this.props.navigation.state.params.UserName,
+              isLoading:false
+          });
+            // 没有接收到
+          var supplierCode=this.state.SupplierCode; var userName=this.state.UserName;var oStatus=this.state.OrderStatus;
+         // alert('Method=OrderList&SupplierCode='+supplierCode+'&UserName='+userName+"&Status="+oStatus);
+          //请求数据
+          // this.fetchData();
+          //需要加载 待处理订单条数
+      }
+
     componentDidMount() {
 
     }
@@ -63,7 +76,8 @@ import Detail from "./Detail";
 
     //网络请求
     fetchData() {
-        var supplierCode=this.props.SupplierCode; var userName=this.props.UserName;var oStatus=this.props.OrderStatus;
+        var supplierCode=this.state.SupplierCode; var userName=this.state.UserName;var oStatus=this.state.OrderStatus;
+        // var supplierCode=this.props.SupplierCode; var userName=this.props.UserName;var oStatus=this.props.OrderStatus;
         // alert('Method=OrderList&SupplierCode='+supplierCode+'&UserName='+userName+"&Status="+oStatus);
         //这个是js的访问网络的方法
         fetch(GlobalProps.OrderList,{
@@ -179,6 +193,13 @@ UserName:fushuai*/
 
     render() {
 
+          return(
+              <View>
+                  <Text onPress={()=>{
+                      this.props.navigation.navigate("Detail");
+                  }}>点击跳转</Text>
+              </View>
+          );
         //const { navigate } = this.props.navigation;
         //第一次加载等待的view
         if (this.state.isLoading && !this.state.error) {
