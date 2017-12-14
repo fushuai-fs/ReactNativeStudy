@@ -32,7 +32,7 @@ export default class CommonCell extends Component<{}> {
         }
     }
     render() {
-       // alert(JSON.stringify(this.props.Data));
+      //  alert('CommonCell'+JSON.stringify(this.props.Data));
         const  _data=this.props.Data.item;
         return (
             <View style={styles.container}>

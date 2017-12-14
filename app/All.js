@@ -23,11 +23,16 @@ var boxW=100;
 var vMargin = (width-cols*boxW)/(cols+1);
 var hMargin=25;
 
+import { StackNavigator } from 'react-navigation';
 
+//导入页面（或导入组件）
 import  CommonCell from './CommonCell.js';
+import Detail from "./Detail";
+
+
 // ES6
 // noinspection JSAnnotator
-export default class All extends Component<{}> {
+  export  default class AllList extends Component<{}> {
     static defaultProps={
         SupplierCode:'',
         UserName: '',
@@ -41,18 +46,18 @@ export default class All extends Component<{}> {
             error: false,
             errorInfo: "",
             dataArray: null,
-            dataStrArr:''
+            dataStrArr:'',
+            tag:'',
+            OrderID:''
         }
     }
     componentWillMount(){
-        alert('componentWillMount');
-        alert(JSON5.stringify(this.props))
-
+        //alert(this.props.SupplierCode)
+        //请求数据
+        this.fetchData();
     }
     componentDidMount() {
 
-        //请求数据
-        //  this.fetchData();
     }
 
 
@@ -93,13 +98,13 @@ UserName:fushuai*/
             })
             .done();
     }
-    //加载等待的view
+    //加载等待的view   ActivityIndicator组件？？？？？？？？？？？？？？？
     renderLoadingView() {
         return (
             <View style={styles.container}>
                 <ActivityIndicator
                     animating={true}
-                    style={[styles.gray, {height: 80}]}
+                    style={[{flex:1,justifyContent:'center',height: 180}]}
                     color='red'
                     size="large"
                 />
@@ -117,11 +122,29 @@ UserName:fushuai*/
             </View>
         );
     }
-    //返回itemView
+    //返回itemView   FlatList每行数据
     renderItemView=(item)=> {
+      // alert(JSON5.stringify(item));
         return (
-        <CommonCell Data={item}/>
+            <TouchableOpacity onPress={()=>this.cellAction(item)}>
+                <CommonCell Data={item}/>
+            </TouchableOpacity>
         );
+    }
+    //点击某行
+    cellAction =(item)=>{
+        if(item.index < this.state.dataArray.length - 1){
+            this.setState({
+                tag:'Detail',
+                OrderID:item.item.OrderID
+            })
+          //  alert(item.item.OrderID);
+           // DeviceEventEmitter.emit('left',item.index); //发监听
+          //  alert(JSON5.stringify(item.item));
+          //   this.props.navigation.navigate('Detail',{Data:item.item});
+        //    navigate.navigate('Detail',{Data:item.item});
+        }
+
     }
     renderData() {
        // alert(this.state.dataStrArr);
@@ -142,15 +165,33 @@ UserName:fushuai*/
         return item.OrderID
     }
 
+      renderDetail(SupplierCode,UserName,OrderID) {
+          // alert(this.props.SupplierCode)// alert(SupplierCode+'--'+UserName+'--'+this.state.OrderID);
+          return (
+              <ScrollView >
+                  <View style={styles.container} >
+                      <Detail SupplierCode={SupplierCode} UserName={UserName} OrderID={OrderID}/>
+                  </View>
+              </ScrollView>
+          );
+      }
+
+
     render() {
 
+        //const { navigate } = this.props.navigation;
         //第一次加载等待的view
         if (this.state.isLoading && !this.state.error) {
             return this.renderLoadingView();
         } else if (this.state.error) {
             //请求失败view
             return this.renderErrorView(this.state.errorInfo);
+        }else if(this.state.tag==='Detail') {
+            // 加载详情页面  使用 this.state.OrderID
+
+            return this.renderDetail(this.props.SupplierCode,this.props.UserName,this.state.OrderID);
         }
+
         //加载数据
         return this.renderData();
         // return (
@@ -194,3 +235,4 @@ const styles = StyleSheet.create({
         textAlign:'center',marginLeft:30,marginRight:30,
     },
 });
+

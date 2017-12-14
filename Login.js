@@ -12,6 +12,7 @@ import {
 // var JSON5 = require('json5');
 import { StackNavigator,} from 'react-navigation';
 
+
  // import Main from './app/Main.js';
 
 // const instructions = Platform.select({
@@ -31,7 +32,20 @@ var cols =3;
 var boxW=100;
 var vMargin = (width-cols*boxW)/(cols+1);
 var hMargin=25;
-
+// import Main from './app/Main.js';
+// import All from './app/All.js';
+// import Detail from './app/Detail.js';
+//
+// // 导航
+// const App = StackNavigator({
+//         Main : { screen: Main },
+//         All:{ screen:All },
+//         Detail:{ screen:Detail },
+//     },{
+//         initialRouteName:'Main',
+//         title:'', headerMode: 'none',
+//     }
+// )
 // ES6
 // noinspection JSAnnotator
 export default class Login extends Component<{}> {
@@ -49,19 +63,26 @@ export default class Login extends Component<{}> {
             loaded: false,
             loginText:'登 录',
             loginDesc:'',
+            logined:false
         }
     }
     render() {
-        const { navigate } = this.props.navigation;
+
+         const { navigate } = this.props.navigation;
 
         return (
             <View style={styles.container} >
                 <Image source={require('./image/icon.png')} style={styles.iconStyle }/>
                 <View style={styles.loginStyle}>
                     <Text  style={[styles.textsStyle] }>{'公司ID'}</Text>
-                    <TextInput ref={'SupplierCode'} placeholde={'公司ID'} style={styles.textInputStyle }
+                    <TextInput ref={'SupplierCode'}
+                               style={styles.textInputStyle }
+                               keyboardType={'numeric'}
+                               placeholde={'公司ID'}
+                               placeholderTextColor="red"
+                               underlineColorAndroid={'transparent'}
                                onChangeText={(text) => { this.state.SupplierCode = text } }
-                    value={'25887708'}
+
                     />
                 </View>
                 <View style={styles.loginStyle}>
@@ -97,7 +118,7 @@ export default class Login extends Component<{}> {
 
     renderPress=(navigate)=>{
         // fetch 返回结果最好使用json
-        var _navigate= navigate; // 作用域问题定义变量
+       var _navigate= navigate; // 作用域问题定义变量
 
         var supplierCode=this.state.SupplierCode; var userName=this.state.UserName;var password=this.state.Password;
         this.setState({
@@ -120,6 +141,8 @@ export default class Login extends Component<{}> {
             //  alert(responsejson.name+'qwert');
               if(responsejson.name==='123')
               {
+                    // this.setState({logined:true});
+                  // _navigate.dispatch(resetAction);
                   _navigate('Main',{SupplierCode:supplierCode,UserName:userName,});
               } else
               {
@@ -129,9 +152,10 @@ export default class Login extends Component<{}> {
               }
             })
             .catch((error) => {
-                  alert(error);
+                //  alert(error);
                 this.setState({
-                    loginText:'登 录'
+                    loginText:'登 录',
+                    loginDesc:'网络繁忙请稍后再试......',
                 });
             });
     }
