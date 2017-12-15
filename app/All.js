@@ -51,21 +51,26 @@ import Detail from "./Detail";
             OrderID:'',
             SupplierCode:'',
             UserName: '',
+            OrderStatus:'',
         }
     }
       // render() 方法前运行
       componentWillMount(){
           //  this.props.navigation.dispatch(resetAction);
+         // alert(JSON5.stringify(this.props.navigation.state.params));
+       //   alert(JSON5.stringify(this.props.navigation.state.params));
           this.setState({
               SupplierCode: this.props.navigation.state.params.SupplierCode,
               UserName :this.props.navigation.state.params.UserName,
-              isLoading:false
+              // isLoading:false
           });
-            // 没有接收到
-          var supplierCode=this.state.SupplierCode; var userName=this.state.UserName;var oStatus=this.state.OrderStatus;
-         // alert('Method=OrderList&SupplierCode='+supplierCode+'&UserName='+userName+"&Status="+oStatus);
+
+          var supplierCode=this.props.navigation.state.params.SupplierCode;
+          var userName=this.props.navigation.state.params.UserName;
+          var oStatus='';
+          // alert('Method=OrderList&SupplierCode='+supplierCode+'&UserName='+userName+"&Status="+oStatus);
           //请求数据
-          // this.fetchData();
+           this.fetchData(supplierCode,userName,oStatus);
           //需要加载 待处理订单条数
       }
 
@@ -75,8 +80,8 @@ import Detail from "./Detail";
 
 
     //网络请求
-    fetchData() {
-        var supplierCode=this.state.SupplierCode; var userName=this.state.UserName;var oStatus=this.state.OrderStatus;
+    fetchData(supplierCode,userName,oStatus) {
+     //   var supplierCode=this.state.SupplierCode; var userName=this.state.UserName;var oStatus=this.state.OrderStatus;
         // var supplierCode=this.props.SupplierCode; var userName=this.props.UserName;var oStatus=this.props.OrderStatus;
         // alert('Method=OrderList&SupplierCode='+supplierCode+'&UserName='+userName+"&Status="+oStatus);
         //这个是js的访问网络的方法
@@ -149,9 +154,10 @@ UserName:fushuai*/
     cellAction =(item)=>{
         if(item.index < this.state.dataArray.length - 1){
             this.setState({
-                tag:'Detail',
+               // tag:'Detail',
                 OrderID:item.item.OrderID
             })
+            this.props.navigation.navigate("Detail",{SupplierCode:this.state.SupplierCode,UserName:this.state.UserName,OrderID:item.item.OrderID});
           //  alert(item.item.OrderID);
            // DeviceEventEmitter.emit('left',item.index); //发监听
           //  alert(JSON5.stringify(item.item));
@@ -179,27 +185,27 @@ UserName:fushuai*/
         return item.OrderID
     }
 
-      renderDetail(SupplierCode,UserName,OrderID) {
-          // alert(this.props.SupplierCode)// alert(SupplierCode+'--'+UserName+'--'+this.state.OrderID);
-          return (
-              <ScrollView >
-                  <View style={styles.container} >
-                      <Detail SupplierCode={SupplierCode} UserName={UserName} OrderID={OrderID}/>
-                  </View>
-              </ScrollView>
-          );
-      }
+      // renderDetail(SupplierCode,UserName,OrderID) {
+      //     // alert(this.props.SupplierCode)// alert(SupplierCode+'--'+UserName+'--'+this.state.OrderID);
+      //     return (
+      //         <ScrollView >
+      //             <View style={styles.container} >
+      //                 <Detail SupplierCode={SupplierCode} UserName={UserName} OrderID={OrderID}/>
+      //             </View>
+      //         </ScrollView>
+      //     );
+      // }
 
 
     render() {
 
-          return(
-              <View>
-                  <Text onPress={()=>{
-                      this.props.navigation.navigate("Detail");
-                  }}>点击跳转</Text>
-              </View>
-          );
+          // return(
+          //     <View>
+          //         <Text onPress={()=>{
+          //             this.props.navigation.navigate("Detail");
+          //         }}>点击跳转</Text>
+          //     </View>
+          // );
         //const { navigate } = this.props.navigation;
         //第一次加载等待的view
         if (this.state.isLoading && !this.state.error) {
@@ -207,11 +213,12 @@ UserName:fushuai*/
         } else if (this.state.error) {
             //请求失败view
             return this.renderErrorView(this.state.errorInfo);
-        }else if(this.state.tag==='Detail') {
-            // 加载详情页面  使用 this.state.OrderID
-
-            return this.renderDetail(this.props.SupplierCode,this.props.UserName,this.state.OrderID);
         }
+        // else if(this.state.tag==='Detail') {
+        //     // 加载详情页面  使用 this.state.OrderID
+        //
+        //     return this.renderDetail(this.props.SupplierCode,this.props.UserName,this.state.OrderID);
+        // }
 
         //加载数据
         return this.renderData();

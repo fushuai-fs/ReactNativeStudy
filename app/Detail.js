@@ -26,9 +26,6 @@ var hMargin=25;
 // noinspection JSAnnotator
 export default class Detail extends Component<{}> {
     static defaultProps={
-        SupplierCode:'',
-        UserName: '',
-        OrderID:''
     }
     constructor(props) {
         super(props);
@@ -37,20 +34,29 @@ export default class Detail extends Component<{}> {
             //网络请求状态
             error: false,
             errorInfo: "",
-            dataArray:{}
+            dataArray:{},
+            SupplierCode:'',
+            UserName: '',
+            OrderID:''
         }
     }
     // render() 方法前运行
     componentWillMount(){
+
+        var SupplierCode=this.props.navigation.state.params.SupplierCode;
+        var UserName=this.props.navigation.state.params.UserName;
+        var OrderID = this.props.navigation.state.params.OrderID;
         // alert(JSON.stringify(this.props.Data))
-        // this.setState({
-        //     Data: this.props.navigation.state.params.Data,
-        // });
-        this.fetchData();
+        this.setState({
+            SupplierCode:SupplierCode,
+            UserName:UserName,
+            OrderID:OrderID
+        });
+        this.fetchData(SupplierCode,UserName,OrderID);
     }
     //网络请求
-    fetchData() {
-        var supplierCode=this.props.SupplierCode; var userName=this.props.UserName;var orderID=this.props.OrderID;
+    fetchData(supplierCode,userName,orderID) {
+       // var supplierCode=this.props.SupplierCode; var userName=this.props.UserName;var orderID=this.props.OrderID;
        // alert(orderID);
         // alert('Method=OrderList&SupplierCode='+supplierCode+'&UserName='+userName+"&Status="+oStatus);
         //这个是js的访问网络的方法
@@ -68,7 +74,7 @@ UserName:fushuai*/
         })
             .then((response) => response.json())
             .then((responseData) => {
-               //  alert('detail'+JSON5.stringify(responseData));
+             //    alert('detail    \r\n'+JSON5.stringify(responseData));
                 this.setState({
                     //复制数据源
                     dataArray: responseData,
@@ -88,25 +94,38 @@ UserName:fushuai*/
     render() {
      //   alert('Detail'+JSON.stringify(this.props.Data));
        //  alert(JSON.stringify(this.state.Data));
-        //const  _data=this.props.Data.item;
+        // const { navigate } = this.props.navigation;
+        const  _data=this.state.dataArray;
         return (
             <View style={styles.container}>
-                {/*<Text style={styles.hotelroom}>{_data.HotelNameCN+'('+_data.HotelNameGB+')' }</Text>*/}
-                {/*<Text style={styles.hotelroom}>{_data.CheckIn+'('+_data.CheckOut+')'}</Text>*/}
-                {/*<View style={styles.orderinfo}>*/}
-                    {/*<Text style={styles.orderitem}>{_data.CheckIn} 至 {_data.CheckOut}</Text>*/}
-                    {/*<Text style={styles.orderitem}> {_data.rooms}晚</Text>*/}
-                    {/*<Text style={[styles.orderitem,{flex:1,}]}> {_data.rooms}间</Text>*/}
-                    {/*<Text style={styles.orderitem}>{_data.Guests}</Text>*/}
-                {/*</View>*/}
-                {/*<View style={[styles.orderinfo,]}>*/}
-                    {/*<Text style={{color:'gray',flex:1}}>订单号{_data.OrderID}</Text>*/}
-                    {/*<Text style={{color:'orange'}}>CNY{_data.Payments}</Text>*/}
-                {/*</View>*/}
-                <View style={[styles.orderinfo,]}>
-                    <Text style={[styles.orderstate,{flex:1}]}>未发单到酒店</Text>
-                    <Text style={[styles.orderstate,styles.pushorder]}>已发</Text>
+                <View style={{ flexDirection: 'row',justifyContent:'space-between'}}>
+                    <Text onPress={()=>this.props.navigation.goBack()}>&lt;返回　　</Text>
+                    <Text>{'订单详情'}</Text>
                 </View>
+                <View style={{ flexDirection: 'row',justifyContent:'space-between'}}>
+                    <Text>订单号：　{_data.OrderID}</Text>
+                    <Text>{_data.AddTime }</Text>
+                </View>
+                <Text style={styles.hotelroom}>{_data.HotelNameCN+'('+_data.HotelNameGB+')' }</Text>
+                <Text style={styles.hotelroom}>{_data.SellRoomNameCN+'('+_data.SellRoomNameGB+')'}</Text>
+                <Text style={styles.hotelroom}>{_data.Guests}</Text>
+                <View style={styles.orderinfo}>
+                    <Text style={styles.orderitem}>{_data.CheckIn} 至 {_data.CheckOut}</Text>
+                    <Text style={styles.orderitem}> {_data.rooms}晚</Text>
+                    <Text style={[styles.orderitem]}> {_data.rooms}间</Text>
+                    <Text style={[styles.orderitem]}> {_data.GuestNumber}人</Text>
+                </View>
+                <Text>备注：{_data.Remark}</Text>
+                <View>
+                    <Text style={{color:'orange'}}>房费：　CNY{_data.Payments}</Text>
+                </View>
+                <View>
+                    <Text>订单状态　{_data.Status}</Text>
+                </View>
+                {/*<View style={[styles.orderinfo,]}>*/}
+                    {/*<Text style={[styles.orderstate,{flex:1}]}>未发单到酒店</Text>*/}
+                    {/*<Text style={[styles.orderstate,styles.pushorder]}>已发</Text>*/}
+                {/*</View>*/}
             </View>
         );
     }

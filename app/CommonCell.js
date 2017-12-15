@@ -37,7 +37,7 @@ export default class CommonCell extends Component<{}> {
         return (
             <View style={styles.container}>
                 <Text style={styles.hotelroom}>{_data.HotelNameCN+'('+_data.HotelNameGB+')' }</Text>
-                <Text style={styles.hotelroom}>{_data.CheckIn+'('+_data.CheckOut+')'}</Text>
+                <Text style={styles.hotelroom}>{_data.SellRoomNameCN+'('+_data.SellRoomNameGB+')'}</Text>
                 <View style={styles.orderinfo}>
                     <Text style={styles.orderitem}>{_data.CheckIn} 至 {_data.CheckOut}</Text>
                     <Text style={styles.orderitem}> {_data.rooms}晚</Text>

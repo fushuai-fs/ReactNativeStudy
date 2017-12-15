@@ -57,7 +57,7 @@ export default class Login extends Component<{}> {
     constructor (props) {
         super (props)
         this.state = {
-            SupplierCode:'25887708',
+            SupplierCode:'63967667',
             UserName: 'fushuai',
             Password: 'fushuai',
             loaded: false,
@@ -89,7 +89,7 @@ export default class Login extends Component<{}> {
                     <Text  style={[styles.textsStyle] }>{'账　号'}</Text>
                     <TextInput ref={'UserName'} placeholde={'账号/手机号'} style={styles.textInputStyle }
                                onChangeText={(text) => { this.state.UserName = text } }
-                    value={'fushuai'}
+
                     />
                 </View>
                 <View style={styles.loginStyle}>
@@ -119,12 +119,14 @@ export default class Login extends Component<{}> {
     renderPress=(navigate)=>{
         // fetch 返回结果最好使用json
        var _navigate= navigate; // 作用域问题定义变量
-        _navigate('MyApp',{SupplierCode:supplierCode,UserName:userName,});
+     //   _navigate('MyApp',{SupplierCode:supplierCode,UserName:userName,});
         var supplierCode=this.state.SupplierCode; var userName=this.state.UserName;var password=this.state.Password;
         this.setState({
             loginText:'正在登录...'
         });
+       // alert('Method=Login&SupplierCode='+supplierCode+'&UserName='+userName+'&PassWord='+password);
           //  var bodys= 'Method=Login&SupplierCode='+supplierCode+'&UserName='+userName+'&PassWord='+password;
+       // alert(GlobalProps.LoginUrl);
         return fetch(GlobalProps.LoginUrl, {
             method: 'POST',
             headers: {
@@ -138,21 +140,21 @@ export default class Login extends Component<{}> {
                 this.setState({
                     loginText:'登 录'
                 });
-            //  alert(responsejson.name+'qwert');
-              if(responsejson.name==='123')
+             // alert(JSON.stringify(responsejson));
+              if(responsejson.msg==='')
               {
                     // this.setState({logined:true});
                   // _navigate.dispatch(resetAction);
-                  _navigate('MyApp',{SupplierCode:supplierCode,UserName:userName,});
+                  _navigate('MyApp',{SupplierCode:supplierCode,UserName:userName,backBehavior:'none'});
               } else
               {
                   this.setState({
-                      loginDesc:'网络繁忙请稍后再试......',
+                      loginDesc:responsejson.msg,
                   });
               }
             })
             .catch((error) => {
-                //  alert(error);
+                 //alert(error);
                 this.setState({
                     loginText:'登 录',
                     loginDesc:'网络繁忙请稍后再试......',
