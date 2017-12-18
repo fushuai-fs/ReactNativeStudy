@@ -48,10 +48,10 @@ export default class CommonCell extends Component<{}> {
                     <Text style={{color:'gray',flex:1}}>订单号{_data.OrderID}</Text>
                     <Text style={{color:'orange'}}>CNY{_data.Payments}</Text>
                 </View>
-                <View style={[styles.orderinfo,]}>
-                    <Text style={[styles.orderstate,{flex:1}]}>未发单到酒店</Text>
-                    <Text style={[styles.orderstate,styles.pushorder]}>已发</Text>
-                </View>
+                {/*<View style={[styles.orderinfo,]}>*/}
+                    {/*<Text style={[styles.orderstate,{flex:1}]}>未发单到酒店</Text>*/}
+                    {/*<Text style={[styles.orderstate,styles.pushorder]}>已发</Text>*/}
+                {/*</View>*/}
             </View>
         );
     }
@@ -79,7 +79,7 @@ const styles = StyleSheet.create({
     container: {
         paddingTop:10,paddingBottom:10,
         paddingLeft:25,paddingRight:10,
-
+        width:width,
         backgroundColor:'white',
         alignItems: 'flex-start',
     },
@@ -87,6 +87,7 @@ const styles = StyleSheet.create({
         fontSize:14,
         fontWeight: 'bold',
         flexWrap:'wrap',
+        color:'blue',
     },
     orderinfo:{
         flexDirection: 'row',

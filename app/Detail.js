@@ -1,6 +1,7 @@
 
 import React, { Component } from 'react';
 import {
+    Alert,
     Platform,
     StyleSheet,
     Text,
@@ -37,7 +38,8 @@ export default class Detail extends Component<{}> {
             dataArray:{},
             SupplierCode:'',
             UserName: '',
-            OrderID:''
+            OrderID:'',
+            Refuse:"" , // 拒单原因
         }
     }
     // render() 方法前运行
@@ -74,7 +76,7 @@ UserName:fushuai*/
         })
             .then((response) => response.json())
             .then((responseData) => {
-             //    alert('detail    \r\n'+JSON5.stringify(responseData));
+             //  alert('detail    \r\n'+JSON5.stringify(responseData));
                 this.setState({
                     //复制数据源
                     dataArray: responseData,
@@ -83,7 +85,7 @@ UserName:fushuai*/
                 //  alert(JSON5.stringify(this.state.dataArray));
             })
             .catch((error) => {
-                  alert(error);
+                //  alert(error);
                 this.setState({
                     error: true,
                     errorInfo: error
@@ -96,39 +98,146 @@ UserName:fushuai*/
        //  alert(JSON.stringify(this.state.Data));
         // const { navigate } = this.props.navigation;
         const  _data=this.state.dataArray;
+       // alert(JSON5.stringify(_data))
         return (
+            <View  >
+                <View style={styles.titlestyle}>
+                    <Text style={{alignSelf:'center'}} onPress={()=>this.props.navigation.goBack()}>　&lt;返回</Text>
+                    <Text style={{ alignSelf:'center'}}>{'订单详情'}</Text>
+                    <Text >　　 </Text>
+                </View>
             <View style={styles.container}>
-                <View style={{ flexDirection: 'row',justifyContent:'space-between'}}>
-                    <Text onPress={()=>this.props.navigation.goBack()}>&lt;返回　　</Text>
-                    <Text>{'订单详情'}</Text>
+
+                {/*<View style={{ flexDirection: 'row',justifyContent:'space-between'}}>*/}
+                {/*</View>*/}
+                <View style={styles.groupstyle}>
+                    <Text style={styles.orders}>订单号： {_data.OrderID}</Text>
+                    <Text style={styles.orders}>预定时间： {_data.AddTime }</Text>
+                    <Text style={[styles.hotelroom,styles.orders]}>{_data.HotelNameCN+'('+_data.HotelNameGB+')' }</Text>
                 </View>
-                <View style={{ flexDirection: 'row',justifyContent:'space-between'}}>
-                    <Text>订单号：　{_data.OrderID}</Text>
-                    <Text>{_data.AddTime }</Text>
+                <View style={styles.groupstyle}>
+                    <View style={{flexDirection: 'row',width:width*0.9,justifyContent:'space-between' }}>
+                        <Text style={[styles.orderitem]}>{_data.SellRoomNameCN+'('+_data.SellRoomNameGB+')'}</Text>
+                        <Text style={[styles.orderitem]}> {_data.rooms}间</Text>
+                    </View>
+                    <View style={{flexDirection: 'row',width:width*0.9,justifyContent:'space-between'}}>
+                        <Text style={[styles.orderitem]}>{_data.CheckIn} 至 {_data.CheckOut}</Text>
+                        <Text style={styles.orderitem}> {_data.rooms}晚</Text>
+                    </View>
+                    <View style={{flexDirection: 'row',width:width*0.9,justifyContent:'space-between'}}>
+                        <Text style={[styles.orderitem]}>{_data.Guests}</Text>
+                        <Text style={[styles.orderitem]}> {_data.GuestNumber}人</Text>
+                    </View>
                 </View>
-                <Text style={styles.hotelroom}>{_data.HotelNameCN+'('+_data.HotelNameGB+')' }</Text>
-                <Text style={styles.hotelroom}>{_data.SellRoomNameCN+'('+_data.SellRoomNameGB+')'}</Text>
-                <Text style={styles.hotelroom}>{_data.Guests}</Text>
-                <View style={styles.orderinfo}>
-                    <Text style={styles.orderitem}>{_data.CheckIn} 至 {_data.CheckOut}</Text>
-                    <Text style={styles.orderitem}> {_data.rooms}晚</Text>
-                    <Text style={[styles.orderitem]}> {_data.rooms}间</Text>
-                    <Text style={[styles.orderitem]}> {_data.GuestNumber}人</Text>
-                </View>
-                <Text>备注：{_data.Remark}</Text>
-                <View>
-                    <Text style={{color:'orange'}}>房费：　CNY{_data.Payments}</Text>
-                </View>
-                <View>
-                    <Text>订单状态　{_data.Status}</Text>
-                </View>
+                {this.renderStatus(_data.Status,_data.OrderID)}
                 {/*<View style={[styles.orderinfo,]}>*/}
                     {/*<Text style={[styles.orderstate,{flex:1}]}>未发单到酒店</Text>*/}
                     {/*<Text style={[styles.orderstate,styles.pushorder]}>已发</Text>*/}
                 {/*</View>*/}
             </View>
+            </View>
         );
     }
+    renderStatus(orderStatus,OrderID){
+        // if(orderStatus===1){
+            return (
+                <View>
+                    <View style={{flexDirection: 'row'}}>
+                        <Text style={{alignSelf:'center'}}>拒单原因：</Text>
+                        <TextInput style={styles.textInputStyle} onChangeText={(text) => { this.state.Refuse = text }} />
+                    </View>
+                    <View style={{flexDirection: 'row', width:width*0.9,justifyContent:'center'}}>
+                        <View style={styles.styleButton}>
+                            <Text style ={styles.textsStyle} onPress={()=>this.OrderRefuse(OrderID)} >{'拒 单'}</Text>
+                        </View>
+                        <View style={styles.styleButton}>
+                            <Text style ={styles.textsStyle} onPress={()=>this.OrderConfirm(OrderID)} >{'订 妥'}</Text>
+                        </View>
+
+                    </View>
+                </View>
+            );
+        // }
+
+    }
+    // 拒单
+    OrderRefuse(OrderID){
+        var SupplierCode=this.state.SupplierCode;
+        var UserName =this.state.UserName;
+        var refuse =this.state.Refuse;
+        if(refuse===null || refuse===''){
+            Alert.alert('',"请填写拒绝原因");
+            return;
+        }
+
+        fetch(GlobalProps.OrderList,{
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body:'Method=Refuse&SupplierCode='+SupplierCode+'&UserName='+UserName+"&OrderID="+OrderID
+        })
+            .then((response) => response.json())
+            .then((responseData) => {
+                this.setState({
+                    //复制数据源
+                    isLoading: false,
+                });
+                if(responseData.msg===''){
+                    Alert.alert('',"拒单成功");
+                }
+                else  {
+                    Alert.alert('',responseData.msg);
+                }
+                //  alert(JSON5.stringify(this.state.dataArray));
+            })
+            .catch((error) => {
+               // alert(error);
+                this.setState({
+                    error: true,
+                    errorInfo: error
+                })
+            })
+            .done();
+    }
+    //订妥
+    OrderConfirm(OrderID){
+        var SupplierCode=this.state.SupplierCode;
+        var UserName =this.state.UserName;
+        fetch(GlobalProps.OrderList,{
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body:'Method=Settled&SupplierCode='+SupplierCode+'&UserName='+UserName+"&OrderID="+OrderID
+        })
+            .then((response) => response.json())
+            .then((responseData) => {
+                this.setState({
+                    //复制数据源
+                    isLoading: false,
+                });
+                if(responseData.msg===''){
+                    Alert.alert('',"订妥成功");
+                }
+                else  {
+                    Alert.alert('',responseData.msg);
+                }
+                //  alert(JSON5.stringify(this.state.dataArray));
+            })
+            .catch((error) => {
+               // alert(error);
+                this.setState({
+                    error: true,
+                    errorInfo: error
+                })
+            })
+            .done();
+    }
+
+
 
     // componentDidMount() {
     //     return fetch(GlobalProps.LoginUrl)
@@ -150,12 +259,27 @@ UserName:fushuai*/
 }
 
 const styles = StyleSheet.create({
+    groupstyle:{
+        borderBottomWidth:1,
+        opacity:0.5,
+        width:width*0.9,
+        paddingTop:5,paddingBottom:10,
+    },
     container: {
-        paddingTop:10,paddingBottom:10,
-        paddingLeft:25,paddingRight:10,
+        width:width,
+        paddingTop:5,paddingBottom:10,
+        paddingLeft:20,paddingRight:20,
 
         backgroundColor:'white',
         alignItems: 'flex-start',
+    },
+    titlestyle:{
+        flexDirection: 'row',
+        justifyContent:'space-between',
+        // alignItems:'flex-start',
+        backgroundColor:'blue',
+        height:35,
+
     },
     hotelroom:{
         fontSize:14,
@@ -166,14 +290,30 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
     },
     orderitem:{
-        fontSize:10,
+        height:24,
     },
     orders:{
-
+        height:24,
+    },
+    textsStyle:{
+        alignSelf:'center',
+        fontSize:18,
+        color:'blue',
+        padding:5,
+         // backgroundColor:'red'
     },
     textInputStyle:{
-        minWidth:width-70, height:38, backgroundColor:'white',
+        minWidth:width*0.5, height:38, backgroundColor:'white',
         marginBottom:1,
-        textAlign:'center',marginLeft:30,marginRight:30,
+        // textAlign:'left',
+        // marginLeft:30,marginRight:30,
     },
+   styleButton:{
+       borderWidth:1,
+       borderRadius:5,
+       borderColor:'blue',
+       justifyContent:'center',
+       alignItems:'center',
+       margin:5
+   },
 });

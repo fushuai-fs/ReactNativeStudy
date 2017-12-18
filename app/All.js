@@ -23,7 +23,7 @@ var boxW=100;
 var vMargin = (width-cols*boxW)/(cols+1);
 var hMargin=25;
 
-import { StackNavigator } from 'react-navigation';
+// import { StackNavigator } from 'react-navigation';
 
 //导入页面（或导入组件）
 import  CommonCell from './CommonCell.js';
@@ -32,7 +32,7 @@ import Detail from "./Detail";
 
 // ES6
 // noinspection JSAnnotator
-  export  default class AllList extends Component<{}> {
+  export  default class All  extends Component<{}> {
     static defaultProps={
         SupplierCode:'',
         UserName: '',
@@ -145,9 +145,14 @@ UserName:fushuai*/
     renderItemView=(item)=> {
       // alert(JSON5.stringify(item));
         return (
+            <View  style={{
+                borderBottomWidth:1,
+                opacity:0.5
+            }} >
             <TouchableOpacity onPress={()=>this.cellAction(item)}>
                 <CommonCell Data={item}/>
             </TouchableOpacity>
+            </View>
         );
     }
     //点击某行
@@ -198,14 +203,6 @@ UserName:fushuai*/
 
 
     render() {
-
-          // return(
-          //     <View>
-          //         <Text onPress={()=>{
-          //             this.props.navigation.navigate("Detail");
-          //         }}>点击跳转</Text>
-          //     </View>
-          // );
         //const { navigate } = this.props.navigation;
         //第一次加载等待的view
         if (this.state.isLoading && !this.state.error) {
@@ -214,11 +211,6 @@ UserName:fushuai*/
             //请求失败view
             return this.renderErrorView(this.state.errorInfo);
         }
-        // else if(this.state.tag==='Detail') {
-        //     // 加载详情页面  使用 this.state.OrderID
-        //
-        //     return this.renderDetail(this.props.SupplierCode,this.props.UserName,this.state.OrderID);
-        // }
 
         //加载数据
         return this.renderData();

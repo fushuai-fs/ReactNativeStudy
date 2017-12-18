@@ -16,7 +16,7 @@ const MyAppTab = TabNavigator({
     Mine: { screen: Mine },
     // Detail: { screen: Detail },
 }, {
-    initialRouteName:'All',
+    initialRouteName:'Mine',
     tabBarPosition: 'bottom',
     animationEnabled: true,
     tabBarOptions: {
@@ -33,7 +33,8 @@ const MyAppTab = TabNavigator({
       MyApp:{ screen:MyAppTab }
       },{
       initialRouteName:'Login',
-          title:'', headerMode: 'none',
+      title:'',
+      headerMode: 'none',
       }
   )
 

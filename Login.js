@@ -1,6 +1,7 @@
 
 import React, { Component } from 'react';
 import {
+    Alert,
     Platform,
     StyleSheet,
     Text,
@@ -57,7 +58,7 @@ export default class Login extends Component<{}> {
     constructor (props) {
         super (props)
         this.state = {
-            SupplierCode:'63967667',
+            SupplierCode:'25887708',
             UserName: 'fushuai',
             Password: 'fushuai',
             loaded: false,
@@ -103,7 +104,7 @@ export default class Login extends Component<{}> {
                                   onPress={()=>this.renderPress(navigate)}
                 >
                     <View style={ styles.loginViewStyle } >
-                        <Text style ={[styles.textsStyle,{color:'white'}]} >{this.state.loginText }</Text>
+                        <Text style ={{color:'white'}} >{this.state.loginText }</Text>
                     </View>
                 </TouchableOpacity>
                 <View>
@@ -117,6 +118,7 @@ export default class Login extends Component<{}> {
     }
 
     renderPress=(navigate)=>{
+        // Alert.alert('tltle','msg');
         // fetch 返回结果最好使用json
        var _navigate= navigate; // 作用域问题定义变量
      //   _navigate('MyApp',{SupplierCode:supplierCode,UserName:userName,});
@@ -124,7 +126,7 @@ export default class Login extends Component<{}> {
         this.setState({
             loginText:'正在登录...'
         });
-       // alert('Method=Login&SupplierCode='+supplierCode+'&UserName='+userName+'&PassWord='+password);
+        // alert('Method=Login&SupplierCode='+supplierCode+'&UserName='+userName+'&PassWord='+password);
           //  var bodys= 'Method=Login&SupplierCode='+supplierCode+'&UserName='+userName+'&PassWord='+password;
        // alert(GlobalProps.LoginUrl);
         return fetch(GlobalProps.LoginUrl, {
