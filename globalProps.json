@@ -1,8 +1,5 @@
 {
-  "LoginUrl":"http://app.wuyoutour.com/App/Supplier.ashx?Type=1",
-  "OrderList":"http://app.wuyoutour.com/App/Supplier.ashx?Type=1",
-  "CheckVersion":"http://app.wuyoutour.com/app/AppVersion.ashx"
-//  "LoginUrl":"http://172.16.1.51:93/App/Supplier.ashx?Type=1",
-//  "OrderList":"http://172.16.1.51:93/App/Supplier.ashx?Type=1",
-//  "CheckVersion":"http://172.16.1.51:93/app/AppVersion.ashx"
+  "LoginUrl":"http://172.16.1.51:93/App/Supplier.ashx?Type=1",
+  "OrderList":"http://172.16.1.51:93/App/Supplier.ashx?Type=1",
+  "CheckVersion":"http://172.16.1.51:93/app/AppVersion.ashx"
 }
