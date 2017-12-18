@@ -27,6 +27,9 @@ var {width}= Dimensions.get('window');
 // ES6
 // noinspection JSAnnotator
 export default class Mine extends Component<{}> {
+    static navigationOptions = {
+        title: '我的',    //设置navigator的title
+    }
     static defaultProps:{
     }
     propTypes:{
@@ -54,16 +57,24 @@ export default class Mine extends Component<{}> {
                     版本号 {this.state.currentVersion }
                     </Text>
 
-                    <View>
-                        <TouchableOpacity  style={styles.itemsStyle} onPress={()=>this.checkVersion()}>
-                            <Text>
-                                检查更新
-                            </Text>
-                            <Text >
-                                {this.state.currentTextDesc}
-                            </Text>
-                        </TouchableOpacity>
-                    </View>
+                    <TouchableOpacity  style={styles.itemsStyle} onPress={()=>this.checkVersion()}>
+                        <Text style={styles.textsStyle}>
+                            检查更新
+                        </Text>
+                        <Text style={styles.textsStyle}>
+                            {this.state.currentTextDesc}
+                        </Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity  style={styles.itemsStyle} onPress={()=>this.checkVersion()}>
+                        <Text style={styles.textsStyle}>
+                            检查更新
+                        </Text>
+                        <Text style={styles.textsStyle}>
+                            {this.state.currentTextDesc}
+                        </Text>
+                    </TouchableOpacity>
+                    {/*<View style={styles.cellStyle}>*/}
+                    {/*</View>*/}
                 </View>
 
             </View>
@@ -87,13 +98,15 @@ export default class Mine extends Component<{}> {
             })
                 .then((response) => response.json())
                 .then((responseData) => {
-                    alert(JSON5.stringify(responseData));
+                    // alert(JSON5.stringify(responseData));
                     this.setState({
                         //复制数据源
                         currentTextDesc: '已是最新版本',
-                        isCheck: true
+                        isCheck: false
                     });
                     if(responseData.IsUpgrade){
+                        // alert(responseData.downloadUrl);
+
                         NativeModules.UpgradeModule.upgrade(responseData.downloadUrl);
                     }
 
@@ -121,12 +134,14 @@ const styles = StyleSheet.create({
         borderWidth:2,borderColor:'white'
     },
     container: {
+        width:width,
         alignItems: 'center',
     },
     textsStyle:{
-        height:38, justifyContent:'center', alignItems:'center',
+        justifyContent:'center',
+        alignItems:"center",
+        alignSelf:'center',
         fontSize:18,
-        lineHeight:38,
         marginLeft:10,marginRight:0,
         //  backgroundColor:'red'
     },
@@ -134,12 +149,21 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent:'space-between',
         // alignItems:'flex-start',
-        backgroundColor:'blue',
+        backgroundColor:'#8698dd',
         height:35,
     },
     itemsStyle:{
-        width:width*0.9,
+        width:width*0.95,
         flexDirection:'row',
         justifyContent:'space-between',
+        backgroundColor:'#ffffff',
+        height:40,
+        borderRadius:5,
+        paddingLeft:10,
+        paddingRight:10,
+        marginBottom:3,
+        marginLeft:5,
+        marginRight:5,
     },
+
 });

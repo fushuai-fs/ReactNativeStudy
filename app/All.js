@@ -1,15 +1,19 @@
 
 import React, { Component } from 'react';
 import {
+    Alert,
     Platform,
     StyleSheet,
     Text,
     TextInput,
     View,
-    Image,TouchableOpacity
-,FlatList
-,ActivityIndicator
-,ScrollView
+    Image,
+    TouchableOpacity,
+    FlatList,
+    ActivityIndicator,
+    ScrollView,
+    Button,
+    RefreshControl
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome'
 var JSON5 = require('json5');
@@ -33,7 +37,17 @@ import Detail from "./Detail";
 // ES6
 // noinspection JSAnnotator
   export  default class All  extends Component<{}> {
-    static defaultProps={
+      // static navigationOptions = {
+      //     title: '所有订单',    //设置navigator的title
+      // }
+      static navigationOptions =({navigation})=>({
+          title: '所有订单',
+          // right:( <Button  onPress={this.state.clickParams}/>)
+      })
+      // _btnClick=()=> {
+      //     alert('单击')
+      // };
+      static defaultProps={
         SupplierCode:'',
         UserName: '',
         OrderStatus:''
@@ -52,14 +66,18 @@ import Detail from "./Detail";
             SupplierCode:'',
             UserName: '',
             OrderStatus:'',
+            refreshing: false,
+            // clickParams:null
         }
     }
       // render() 方法前运行
       componentWillMount(){
+          // Alert.alert('','componentWillMount')
           //  this.props.navigation.dispatch(resetAction);
          // alert(JSON5.stringify(this.props.navigation.state.params));
        //   alert(JSON5.stringify(this.props.navigation.state.params));
           this.setState({
+              // clickParams:this._btnClick,
               SupplierCode: this.props.navigation.state.params.SupplierCode,
               UserName :this.props.navigation.state.params.UserName,
               // isLoading:false
@@ -71,14 +89,29 @@ import Detail from "./Detail";
           // alert('Method=OrderList&SupplierCode='+supplierCode+'&UserName='+userName+"&Status="+oStatus);
           //请求数据
            this.fetchData(supplierCode,userName,oStatus);
+          // this.setState({
+          //     //复制数据源
+          //     isLoading: false,
+          //     refreshing: false
+          // });
           //需要加载 待处理订单条数
       }
 
     componentDidMount() {
 
     }
+        // 下拉 刷新
+      _onRefresh() {
+          this.setState({refreshing: true});
 
-
+          var supplierCode=this.state.SupplierCode;
+          var userName=this.state.UserName;
+          var oStatus='';
+          this.fetchData(supplierCode,userName,oStatus);
+          // fetchData().then(() => {
+          //     this.setState({refreshing: false});
+          // });
+      }
     //网络请求
     fetchData(supplierCode,userName,oStatus) {
      //   var supplierCode=this.state.SupplierCode; var userName=this.state.UserName;var oStatus=this.state.OrderStatus;
@@ -102,9 +135,10 @@ UserName:fushuai*/
               //  alert(JSON5.stringify(responseData.rows));
                 this.setState({
                     //复制数据源
-                    dataStrArr:JSON5.stringify(responseData.rows),
+                    // dataStrArr:JSON5.stringify(responseData.rows),
                     dataArray: responseData.rows,
                     isLoading: false,
+                    refreshing: false
                 });
               //  alert(JSON5.stringify(this.state.dataArray));
             })
@@ -112,6 +146,7 @@ UserName:fushuai*/
                // alert(error);
                 this.setState({
                     error: true,
+                    refreshing: false,
                     errorInfo: error
                 })
             })
@@ -172,11 +207,35 @@ UserName:fushuai*/
 
     }
     renderData() {
+
+        if(this.state.dataArray==null || typeof(JSON5.stringify(this.state.dataArray))==='undefined'){
+            return (
+                <View style={styles.container} >
+                    <ScrollView style={{flex:1}} refreshControl={
+                        <RefreshControl
+                            refreshing={this.state.refreshing}
+                            onRefresh={()=>this._onRefresh()}
+                        />
+                    }>
+                        <Text>
+                            暂无订单，下拉刷新......
+                        </Text>
+                    </ScrollView>
+                </View>
+            );
+
+        }
        // alert(this.state.dataStrArr);
         return (
             <View style={styles.container} >
-            <ScrollView >
+            <ScrollView style={{flex:1}}  refreshControl={
+                <RefreshControl
+                    refreshing={this.state.refreshing}
+                    onRefresh={()=>this._onRefresh()}
+                />
+            }>
                 <FlatList  ref='FlatList'
+
                            data = {this.state.dataArray} //数据源
                            renderItem = {(item) => this.renderItemView(item)} //每一行render
                            keyExtractor={this.keyExtractor}  //使用json中的title动态绑定key
@@ -185,6 +244,8 @@ UserName:fushuai*/
             </View>
         );
     }
+
+
     //使用json中的title动态绑定key
     keyExtractor(item: Object, index: number) {
         return item.OrderID

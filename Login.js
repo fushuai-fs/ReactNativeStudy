@@ -58,7 +58,7 @@ export default class Login extends Component<{}> {
     constructor (props) {
         super (props)
         this.state = {
-            SupplierCode:'25887708',
+            SupplierCode:'63967667',//25887708
             UserName: 'fushuai',
             Password: 'fushuai',
             loaded: false,
@@ -110,11 +110,16 @@ export default class Login extends Component<{}> {
                 <View>
                     <Text style={{color:'red'}}>{this.state.loginDesc}</Text>
                 </View>
+                <TouchableOpacity onPress={()=>this.LoginMethod()}>
                 <View style={ styles.setingViewStyle }>
                     <Text>手机验证码登录</Text>
                 </View>
+                </TouchableOpacity>
             </View>
         );
+    }
+    LoginMethod(){
+        Alert.alert('','此版本暂不支持,请关注后续版本');
     }
 
     renderPress=(navigate)=>{

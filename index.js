@@ -4,7 +4,7 @@ import { StackNavigator,TabNavigator} from 'react-navigation';
 
 //页面
 import Login from './Login.js';
-import Main from './app/Main.js';
+// import Main from './app/Main.js';
 import All from './app/All.js';
 import UnConfirm from './app/UnConfirm.js';
 import Mine from './app/Mine.js';
@@ -15,8 +15,9 @@ const MyAppTab = TabNavigator({
     UnConfirm: { screen: UnConfirm },
     Mine: { screen: Mine },
     // Detail: { screen: Detail },
-}, {
-    initialRouteName:'Mine',
+},
+    {
+    initialRouteName:'All',
     tabBarPosition: 'bottom',
     animationEnabled: true,
     tabBarOptions: {

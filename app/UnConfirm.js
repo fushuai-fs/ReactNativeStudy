@@ -6,10 +6,12 @@ import {
     Text,
     TextInput,
     View,
-    Image,TouchableOpacity
-    ,FlatList
-    ,ActivityIndicator
-    ,ScrollView
+    Image,
+    TouchableOpacity,
+    FlatList,
+    ActivityIndicator,
+    ScrollView,
+    RefreshControl
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome'
 var JSON5 = require('json5');
@@ -26,13 +28,13 @@ var hMargin=25;
 import  CommonCell from './CommonCell.js';
 import Detail from "./Detail";
 
-
-
-
 // ES6
 // noinspection JSAnnotator
 export default class UnConfirm extends Component<{}> {
-
+    static navigationOptions = {
+        title: '待确认订单',    //设置navigator的title
+        showLabel:'123'
+    }
     static defaultProps={
     OrderStatus:1,
         IsManual:1
@@ -51,6 +53,7 @@ export default class UnConfirm extends Component<{}> {
             SupplierCode:'',
             UserName: '',
             OrderStatus:'',
+            refreshing: false,
         }
     }
     // render() 方法前运行
@@ -67,6 +70,16 @@ export default class UnConfirm extends Component<{}> {
         //请求数据
         this.fetchData(supplierCode,userName,oStatus);
         //需要加载 待处理订单条数
+    }
+    // 下拉 刷新
+    _onRefresh() {
+        this.setState({refreshing: true});
+
+        var supplierCode=this.state.SupplierCode;
+        var userName=this.state.UserName;
+        var oStatus=this.props.IsManual;
+        this.fetchData(supplierCode,userName,oStatus);
+
     }
     //网络请求
     fetchData(supplierCode,userName,oStatus) {
@@ -88,6 +101,7 @@ export default class UnConfirm extends Component<{}> {
                   //  dataStrArr:JSON5.stringify(responseData.rows),
                     dataArray: responseData.rows,
                     isLoading: false,
+                    refreshing: false,
                 });
                 //  alert(JSON5.stringify(this.state.dataArray));
             })
@@ -156,10 +170,37 @@ export default class UnConfirm extends Component<{}> {
 
     }
     renderData() {
+
+        if(typeof(JSON5.stringify(this.state.dataArray))==='undefined'){
+            return (
+                <View style={styles.container} >
+                    <ScrollView style={{flex:1}} refreshControl={
+                        <RefreshControl
+                            refreshing={this.state.refreshing}
+                            onRefresh={()=>this._onRefresh()}
+                        />
+                    }>
+                        <Text>
+                            暂无订单，下拉刷新......
+                        </Text>
+                    </ScrollView>
+                </View>
+            );
+
+        }
+
+
+        // alert(JSON5.stringify(this.state.dataArray));
+
         // alert(this.state.dataStrArr);
         return (
             <View style={styles.container} >
-                <ScrollView >
+                <ScrollView style={{flex:1}} refreshControl={
+                    <RefreshControl
+                        refreshing={this.state.refreshing}
+                        onRefresh={()=>this._onRefresh()}
+                    />
+                }>
                     <FlatList  ref='FlatList'
                                data = {this.state.dataArray} //数据源
                                renderItem = {(item) => this.renderItemView(item)} //每一行render

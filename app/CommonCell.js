@@ -36,8 +36,8 @@ export default class CommonCell extends Component<{}> {
         const  _data=this.props.Data.item;
         return (
             <View style={styles.container}>
-                <Text style={styles.hotelroom}>{_data.HotelNameCN+'('+_data.HotelNameGB+')' }</Text>
-                <Text style={styles.hotelroom}>{_data.SellRoomNameCN+'('+_data.SellRoomNameGB+')'}</Text>
+                <Text style={styles.hotelStyle}>{_data.HotelNameCN+'('+_data.HotelNameGB+')' }</Text>
+                <Text style={styles.roomStyle}>{_data.SellRoomNameCN+'('+_data.SellRoomNameGB+')'}</Text>
                 <View style={styles.orderinfo}>
                     <Text style={styles.orderitem}>{_data.CheckIn} 至 {_data.CheckOut}</Text>
                     <Text style={styles.orderitem}> {_data.rooms}晚</Text>
@@ -83,16 +83,22 @@ const styles = StyleSheet.create({
         backgroundColor:'white',
         alignItems: 'flex-start',
     },
-    hotelroom:{
+    hotelStyle:{
         fontSize:14,
         fontWeight: 'bold',
         flexWrap:'wrap',
         color:'blue',
     },
+    roomStyle:{
+        height:24,
+        flexWrap:'wrap',
+    },
     orderinfo:{
+        height:24,
         flexDirection: 'row',
     },
     orderitem:{
+        height:24,
         fontSize:10,
     },
     orders:{
