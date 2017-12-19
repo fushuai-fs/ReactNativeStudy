@@ -1,6 +1,7 @@
 
 import React, { Component } from 'react';
 import {
+    Alert,
     Platform,
     StyleSheet,
     Text,
@@ -9,6 +10,7 @@ import {
     Image,
     TouchableOpacity
     ,NativeModules
+,ToastAndroid
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome'
 var JSON5 = require('json5');
@@ -37,7 +39,7 @@ export default class Mine extends Component<{}> {
     constructor(props) {
         super(props);
         this.state = {
-            currentVersion:'0.0.0',
+            currentVersion:'0.0.2',
             currentTextDesc:'已是最新版本',
             isCheck:false,
 
@@ -65,14 +67,7 @@ export default class Mine extends Component<{}> {
                             {this.state.currentTextDesc}
                         </Text>
                     </TouchableOpacity>
-                    <TouchableOpacity  style={styles.itemsStyle} onPress={()=>this.checkVersion()}>
-                        <Text style={styles.textsStyle}>
-                            检查更新
-                        </Text>
-                        <Text style={styles.textsStyle}>
-                            {this.state.currentTextDesc}
-                        </Text>
-                    </TouchableOpacity>
+
                     {/*<View style={styles.cellStyle}>*/}
                     {/*</View>*/}
                 </View>
@@ -87,7 +82,7 @@ export default class Mine extends Component<{}> {
                 currentTextDesc: '正在检测...',
                 isCheck: true
             });
-             alert(this.state.currentVersion);
+               // alert(this.state.currentVersion);
             fetch(GlobalProps.CheckVersion, {
                 method: 'POST',
                 headers: {
@@ -99,21 +94,38 @@ export default class Mine extends Component<{}> {
                 .then((response) => response.json())
                 .then((responseData) => {
                     // alert(JSON5.stringify(responseData));
-                    this.setState({
-                        //复制数据源
-                        currentTextDesc: '已是最新版本',
-                        isCheck: false
-                    });
+
                     if(responseData.IsUpgrade){
                         // alert(responseData.downloadUrl);
-
-                        NativeModules.UpgradeModule.upgrade(responseData.downloadUrl);
+                        Alert.alert('温馨提醒','检测到有新版本是否更新?',[
+                            {text:'否',onPress:()=>{
+                                this.setState({
+                                currentTextDesc: '检测到有新版本',
+                            });}},
+                            {text:'是',onPress:()=> {
+                                NativeModules.UpgradeModule.upgrade(responseData.downloadUrl);
+                                this.setState({
+                                    currentTextDesc: '正在更新...',
+                                    isCheck: false
+                                });
+                            }}]);
+                    }
+                    else {
+                        this.setState({
+                            currentTextDesc: '已是最新版本',
+                            isCheck: false
+                        });
+                        if(Platform.OS==='android'){
+                            ToastAndroid.show('已是最新版本',ToastAndroid.SHORT);
+                        }else{
+                            alert('已是最新版本');
+                        }
                     }
 
                     //  alert(JSON5.stringify(this.state.dataArray));
                 })
                 .catch((error) => {
-                    alert(error);
+                    // alert(error);
                     this.setState({
                         error: true,
                         errorInfo: error
@@ -149,7 +161,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent:'space-between',
         // alignItems:'flex-start',
-        backgroundColor:'#8698dd',
+        backgroundColor:'#5262dd',
         height:35,
     },
     itemsStyle:{

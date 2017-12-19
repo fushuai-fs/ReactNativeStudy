@@ -132,7 +132,7 @@ UserName:fushuai*/
         })
             .then((response) => response.json())
             .then((responseData) => {
-              //  alert(JSON5.stringify(responseData.rows));
+                 // alert(JSON5.stringify(responseData.rows));
                 this.setState({
                     //复制数据源
                     // dataStrArr:JSON5.stringify(responseData.rows),
@@ -143,7 +143,7 @@ UserName:fushuai*/
               //  alert(JSON5.stringify(this.state.dataArray));
             })
             .catch((error) => {
-               // alert(error);
+                 // alert(error);
                 this.setState({
                     error: true,
                     refreshing: false,

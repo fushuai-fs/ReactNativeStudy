@@ -58,7 +58,7 @@ export default class Login extends Component<{}> {
     constructor (props) {
         super (props)
         this.state = {
-            SupplierCode:'63967667',//25887708
+            SupplierCode:'25887708',//25887708   63967667
             UserName: 'fushuai',
             Password: 'fushuai',
             loaded: false,
@@ -97,7 +97,7 @@ export default class Login extends Component<{}> {
                     <Text  style={[styles.textStyle,styles.textsStyle] }>{'密　码'}</Text>
                     <TextInput ref={'Password'} placeholde={'密码'} secureTextEntry={true} password={true}style={styles.textInputStyle }
                                onChangeText={(text) => { this.state.Password = text } }
-                               value={'fushuai'}
+                               // value={'fushuai'}
                     />
                 </View>
                 <TouchableOpacity activeOpacity={0.5}

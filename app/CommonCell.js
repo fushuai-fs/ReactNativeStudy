@@ -10,7 +10,7 @@ import {
     TouchableOpacity
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome'
-
+import moment from 'moment';
 
 var Dimensions=require('Dimensions');
 var {width}= Dimensions.get('window');
@@ -39,11 +39,11 @@ export default class CommonCell extends Component<{}> {
                 <Text style={styles.hotelStyle}>{_data.HotelNameCN+'('+_data.HotelNameGB+')' }</Text>
                 <Text style={styles.roomStyle}>{_data.SellRoomNameCN+'('+_data.SellRoomNameGB+')'}</Text>
                 <View style={styles.orderinfo}>
-                    <Text style={styles.orderitem}>{_data.CheckIn} 至 {_data.CheckOut}</Text>
-                    <Text style={styles.orderitem}> {_data.rooms}晚</Text>
-                    <Text style={[styles.orderitem,{flex:1,}]}> {_data.rooms}间</Text>
-                    <Text style={styles.orderitem}>{_data.Guests}</Text>
+                    <Text style={styles.orderitem}>{moment(_data.CheckIn).format('MM-DD')} 至 {moment(_data.CheckOut).format('MM-DD')}</Text>
+                    <Text style={styles.orderitem}> {moment(_data.CheckOut).diff(moment(_data.CheckIn), 'days')}晚</Text>
+                    <Text style={[styles.orderitem,{flex:1,}]}> {_data.Rooms}间</Text>
                 </View>
+                <Text style={[styles.orderitem,{flexWrap:'wrap'}]}>{_data.Guests}</Text>
                 <View style={[styles.orderinfo,]}>
                     <Text style={{color:'gray',flex:1}}>订单号{_data.OrderID}</Text>
                     <Text style={{color:'orange'}}>CNY{_data.Payments}</Text>
@@ -90,7 +90,7 @@ const styles = StyleSheet.create({
         color:'blue',
     },
     roomStyle:{
-        height:24,
+        fontSize:14,
         flexWrap:'wrap',
     },
     orderinfo:{

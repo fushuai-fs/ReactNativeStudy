@@ -155,18 +155,19 @@ export default class UnConfirm extends Component<{}> {
     }
     //点击某行
     cellAction =(item)=>{
-        if(item.index < this.state.dataArray.length - 1){
-            this.setState({
-                // tag:'Detail',
-                OrderID:item.item.OrderID
-            })
-            this.props.navigation.navigate("Detail",{SupplierCode:this.state.SupplierCode,UserName:this.state.UserName,OrderID:item.item.OrderID});
-            //  alert(item.item.OrderID);
-            // DeviceEventEmitter.emit('left',item.index); //发监听
-            //  alert(JSON5.stringify(item.item));
-            //   this.props.navigation.navigate('Detail',{Data:item.item});
-            //    navigate.navigate('Detail',{Data:item.item});
-        }
+       // alert(JSON5.stringify(item));
+       //  if(item.item < this.state.dataArray.length - 1){
+       //      this.setState({
+       //          // tag:'Detail',
+       //          OrderID:item.item.OrderID
+       //      })
+       //     //  alert(item.item.OrderID);
+       //      // DeviceEventEmitter.emit('left',item.index); //发监听
+       //      //  alert(JSON5.stringify(item.item));
+       //      //   this.props.navigation.navigate('Detail',{Data:item.item});
+       //      //    navigate.navigate('Detail',{Data:item.item});
+       //  }
+        this.props.navigation.navigate("Detail",{SupplierCode:this.state.SupplierCode,UserName:this.state.UserName,OrderID:item.item.OrderID});
 
     }
     renderData() {

@@ -11,6 +11,7 @@ import {
     TouchableOpacity
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome'
+import moment from 'moment';
 var JSON5 = require('json5');
 // 全局属性
 var GlobalProps = require('../globalProps.json');
@@ -76,10 +77,11 @@ UserName:fushuai*/
         })
             .then((response) => response.json())
             .then((responseData) => {
-             //  alert('detail    \r\n'+JSON5.stringify(responseData));
+              //alert(JSON5.stringify(responseData.msg));
+               // alert(responseData.msg);
                 this.setState({
                     //复制数据源
-                    dataArray: responseData,
+                    dataArray: eval("("+responseData.msg+")"),
                     isLoading: false,
                 });
                 //  alert(JSON5.stringify(this.state.dataArray));
@@ -98,7 +100,7 @@ UserName:fushuai*/
        //  alert(JSON.stringify(this.state.Data));
         // const { navigate } = this.props.navigation;
         const  _data=this.state.dataArray;
-       // alert(JSON5.stringify(_data))
+      //   alert(JSON5.stringify(_data))
         return (
             <View  >
                 <View style={styles.titlestyle}>
@@ -112,20 +114,20 @@ UserName:fushuai*/
                 {/*</View>*/}
                 <View style={styles.groupstyle}>
                     <Text style={styles.orders}>订单号： {_data.OrderID}</Text>
-                    <Text style={styles.orders}>预定时间： {_data.AddTime }</Text>
-                    <Text style={[styles.hotelroom,styles.orders]}>{_data.HotelNameCN+'('+_data.HotelNameGB+')' }</Text>
+                    <Text style={styles.orders}>预定时间： {moment(_data.AddTime).format('YYYY-MM-DD HH:mm') }</Text>
+                    <Text style={[styles.hotelStyle,styles.orders]}>{_data.HotelNameCN+'('+_data.HotelNameGB+')' }</Text>
                 </View>
                 <View style={styles.groupstyle}>
                     <View style={{flexDirection: 'row',width:width*0.9,justifyContent:'space-between' }}>
-                        <Text style={[styles.orderitem]}>{_data.SellRoomNameCN+'('+_data.SellRoomNameGB+')'}</Text>
-                        <Text style={[styles.orderitem]}> {_data.rooms}间</Text>
+                        <Text style={[styles.roomStyle]}>{_data.SellRoomNameCN+'('+_data.SellRoomNameGB+')'}</Text>
+                        <Text style={[styles.orderitem]}> {_data.Rooms} 间</Text>
                     </View>
                     <View style={{flexDirection: 'row',width:width*0.9,justifyContent:'space-between'}}>
-                        <Text style={[styles.orderitem]}>{_data.CheckIn} 至 {_data.CheckOut}</Text>
-                        <Text style={styles.orderitem}> {_data.rooms}晚</Text>
+                        <Text style={[styles.orderitem]}>{moment(_data.CheckIn).format('YYYY-MM-DD')} 至 {moment(_data.CheckOut).format('YYYY-MM-DD')}</Text>
+                        <Text style={styles.orderitem}> {moment(_data.CheckOut).diff(moment(_data.CheckIn), 'days')} 晚</Text>
                     </View>
                     <View style={{flexDirection: 'row',width:width*0.9,justifyContent:'space-between'}}>
-                        <Text style={[styles.orderitem]}>{_data.Guests}</Text>
+                        <Text style={[styles.orderitem,{flexWrap:'wrap',width:width*0.8}]}>{_data.Guest}</Text>
                         <Text style={[styles.orderitem]}> {_data.GuestNumber}人</Text>
                     </View>
                 </View>
@@ -139,12 +141,12 @@ UserName:fushuai*/
         );
     }
     renderStatus(orderStatus,OrderID){
-        // if(orderStatus===1){
+         if(orderStatus==='待确认'){
             return (
                 <View>
                     <View style={{flexDirection: 'row'}}>
                         <Text style={{alignSelf:'center'}}>拒单原因：</Text>
-                        <TextInput style={styles.textInputStyle} onChangeText={(text) => { this.state.Refuse = text }} />
+                        <TextInput style={styles.textInputStyle} multiline={true} onChangeText={(text) => { this.state.Refuse = text }} />
                     </View>
                     <View style={{flexDirection: 'row', width:width*0.9,justifyContent:'center'}}>
                         <View style={styles.styleButton}>
@@ -157,7 +159,14 @@ UserName:fushuai*/
                     </View>
                 </View>
             );
-        // }
+         }
+         else {
+             return (
+                 <View style={{marginTop:10,marginBottom:10}}>
+                     <Text style={{alignSelf:'center'}}>订单状态：{orderStatus}</Text>
+                 </View>
+             );
+         }
 
     }
     // 拒单
@@ -169,72 +178,88 @@ UserName:fushuai*/
             Alert.alert('',"请填写拒绝原因");
             return;
         }
-
-        fetch(GlobalProps.OrderList,{
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/x-www-form-urlencoded',
-            },
-            body:'Method=Refuse&SupplierCode='+SupplierCode+'&UserName='+UserName+"&OrderID="+OrderID
-        })
-            .then((response) => response.json())
-            .then((responseData) => {
-                this.setState({
-                    //复制数据源
-                    isLoading: false,
-                });
-                if(responseData.msg===''){
-                    Alert.alert('',"拒单成功");
-                }
-                else  {
-                    Alert.alert('',responseData.msg);
-                }
-                //  alert(JSON5.stringify(this.state.dataArray));
-            })
-            .catch((error) => {
-               // alert(error);
-                this.setState({
-                    error: true,
-                    errorInfo: error
+        Alert.alert('提醒','确定拒绝吗?',[
+            {text:'取消'},
+            {text:'确定',onPress:()=>{
+                fetch(GlobalProps.OrderList,{
+                    method: 'POST',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body:'Method=Refuse&SupplierCode='+SupplierCode+'&UserName='+UserName+"&OrderID="+OrderID+'&Reason='+refuse
                 })
-            })
-            .done();
+                    .then((response) => response.json())
+                    .then((responseData) => {
+                        this.setState({
+                            //复制数据源
+                            isLoading: false,
+                        });
+                        if(responseData.msg===''){
+                            Alert.alert('',"拒单成功");
+
+                            this.fetchData(SupplierCode,UserName,OrderID);
+                        }
+                        else  {
+                            Alert.alert('',responseData.msg);
+                        }
+                        //  alert(JSON5.stringify(this.state.dataArray));
+                    })
+                    .catch((error) => {
+                        // alert(error);
+                        this.setState({
+                            error: true,
+                            errorInfo: error
+                        })
+                    })
+                    .done();
+            }}
+        ]);
+
     }
     //订妥
     OrderConfirm(OrderID){
         var SupplierCode=this.state.SupplierCode;
         var UserName =this.state.UserName;
-        fetch(GlobalProps.OrderList,{
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/x-www-form-urlencoded',
-            },
-            body:'Method=Settled&SupplierCode='+SupplierCode+'&UserName='+UserName+"&OrderID="+OrderID
-        })
-            .then((response) => response.json())
-            .then((responseData) => {
-                this.setState({
-                    //复制数据源
-                    isLoading: false,
-                });
-                if(responseData.msg===''){
-                    Alert.alert('',"订妥成功");
-                }
-                else  {
-                    Alert.alert('',responseData.msg);
-                }
-                //  alert(JSON5.stringify(this.state.dataArray));
-            })
-            .catch((error) => {
-               // alert(error);
-                this.setState({
-                    error: true,
-                    errorInfo: error
+
+        Alert.alert('提醒','确定订妥吗?',[
+            {text:'取消'},
+            {text:'确定',onPress:()=>{
+                fetch(GlobalProps.OrderList,{
+                    method: 'POST',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body:'Method=Settled&SupplierCode='+SupplierCode+'&UserName='+UserName+"&OrderID="+OrderID
                 })
-            })
-            .done();
+                    .then((response) => response.json())
+                    .then((responseData) => {
+                        this.setState({
+                            //复制数据源
+                            isLoading: false,
+                        });
+                        if(responseData.msg===''){
+                            Alert.alert('',"订妥成功");
+                            this.fetchData(SupplierCode,UserName,OrderID);
+                        }
+                        else  {
+                            Alert.alert('',responseData.msg);
+                        }
+                        //  alert(JSON5.stringify(this.state.dataArray));
+                    })
+                    .catch((error) => {
+                        // alert(error);
+                        this.setState({
+                            error: true,
+                            errorInfo: error
+                        })
+                    })
+                    .done();
+            }}
+        ]);
+
+
     }
 
 
@@ -277,7 +302,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent:'space-between',
         // alignItems:'flex-start',
-        backgroundColor:'blue',
+        backgroundColor:'#5262dd',
         height:35,
 
     },
@@ -290,10 +315,12 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
     },
     orderitem:{
-        height:24,
+      marginTop:5,
+        marginBottom:5,
     },
     orders:{
-        height:24,
+        marginTop:5,
+        marginBottom:5,
     },
     textsStyle:{
         alignSelf:'center',
@@ -303,8 +330,11 @@ const styles = StyleSheet.create({
          // backgroundColor:'red'
     },
     textInputStyle:{
-        minWidth:width*0.5, height:38, backgroundColor:'white',
+        minWidth:width*0.8,
+        height:38,
+        backgroundColor:'white',
         marginBottom:1,
+
         // textAlign:'left',
         // marginLeft:30,marginRight:30,
     },
@@ -314,6 +344,7 @@ const styles = StyleSheet.create({
        borderColor:'blue',
        justifyContent:'center',
        alignItems:'center',
-       margin:5
+       margin:5,
+       marginRight:10
    },
 });

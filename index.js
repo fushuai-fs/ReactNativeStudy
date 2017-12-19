@@ -17,7 +17,7 @@ const MyAppTab = TabNavigator({
     // Detail: { screen: Detail },
 },
     {
-    initialRouteName:'All',
+    initialRouteName:'UnConfirm',
     tabBarPosition: 'bottom',
     animationEnabled: true,
     tabBarOptions: {
