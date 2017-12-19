@@ -188,9 +188,10 @@ const styles = StyleSheet.create({
         borderWidth:2,borderColor:'white'
     },
     textsStyle:{
-         height:38, justifyContent:'center', alignItems:'center',
+         justifyContent:'center', alignItems:'center',
+        alignSelf:'center',
         fontSize:18,
-        lineHeight:38,
+        // lineHeight:38,
         marginLeft:10,marginRight:0,
       //  backgroundColor:'red'
     },
@@ -205,7 +206,7 @@ const styles = StyleSheet.create({
     },
     loginViewStyle:{
         width :width*0.7,height:38,
-        backgroundColor:'blue',
+        backgroundColor:'#2fa4e7',
         marginTop:10,
         justifyContent:'center',
         alignItems:'center',
