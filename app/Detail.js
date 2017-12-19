@@ -302,7 +302,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent:'space-between',
         // alignItems:'flex-start',
-        backgroundColor:'#5262dd',
+        backgroundColor:'#2fa4e7',
         height:35,
 
     },
