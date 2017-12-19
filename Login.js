@@ -58,7 +58,7 @@ export default class Login extends Component<{}> {
     constructor (props) {
         super (props)
         this.state = {
-            SupplierCode:'25887708',//25887708   63967667
+            SupplierCode:'63967667',//25887708   63967667
             UserName: 'fushuai',
             Password: 'fushuai',
             loaded: false,
@@ -126,6 +126,7 @@ export default class Login extends Component<{}> {
         // Alert.alert('tltle','msg');
         // fetch 返回结果最好使用json
        var _navigate= navigate; // 作用域问题定义变量
+
      //   _navigate('MyApp',{SupplierCode:supplierCode,UserName:userName,});
         var supplierCode=this.state.SupplierCode; var userName=this.state.UserName;var password=this.state.Password;
         this.setState({

@@ -22,6 +22,12 @@ const MyAppTab = TabNavigator({
     animationEnabled: true,
     tabBarOptions: {
         activeTintColor: '#e91e63',
+        labelStyle: {
+            fontSize: 14,
+        },
+        style: {
+            backgroundColor: '#2fa4e7',
+        },
     },
 });
 

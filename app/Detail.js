@@ -2,13 +2,15 @@
 import React, { Component } from 'react';
 import {
     Alert,
+    Clipboard,
     Platform,
     StyleSheet,
     Text,
     TextInput,
     View,
     Image,
-    TouchableOpacity
+    TouchableOpacity,
+    ToastAndroid
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome'
 import moment from 'moment';
@@ -95,6 +97,19 @@ UserName:fushuai*/
             })
             .done();
     }
+    copyOrderText(){
+        var orderContent='';
+        var _data=this.state.dataArray;
+       // orderContent='订单号：'+_data.OrderID+'\r\n';
+        orderContent+=_data.HotelNameCN+'('+_data.HotelNameGB+') \r\n';
+        orderContent+='预定时间：'+moment(_data.AddTime).format('YYYY-MM-DD HH:mm')+'\r\n';
+        orderContent+=_data.SellRoomNameCN+'()'+'\t'+_data.Rooms+'间 \r\n';
+        orderContent+=moment(_data.CheckIn).format('YYYY-MM-DD')+' 至 '+moment(_data.CheckOut).format('YYYY-MM-DD')+'\t\t'+moment(_data.CheckOut).diff(moment(_data.CheckIn), 'days')+'晚 \r\n' ;
+        orderContent+='入住人：'+_data.Guest+'\t\t'+_data.GuestNumber+' \r\n';
+
+        Clipboard.setString(orderContent);
+        ToastAndroid.show('复制成功',ToastAndroid.SHORT);
+    }
     render() {
      //   alert('Detail'+JSON.stringify(this.props.Data));
        //  alert(JSON.stringify(this.state.Data));
@@ -102,11 +117,11 @@ UserName:fushuai*/
         const  _data=this.state.dataArray;
       //   alert(JSON5.stringify(_data))
         return (
-            <View  >
+            <View>
                 <View style={styles.titlestyle}>
                     <Text style={{alignSelf:'center'}} onPress={()=>this.props.navigation.goBack()}>　&lt;返回</Text>
-                    <Text style={{ alignSelf:'center'}}>{'订单详情'}</Text>
-                    <Text >　　 </Text>
+                    <Text style={{alignSelf:'center'}}>{'订单详情'}</Text>
+                    <Text style={{alignSelf:'center'}} onPress={()=>this.copyOrderText()}>复制　</Text>
                 </View>
             <View style={styles.container}>
 
@@ -115,11 +130,11 @@ UserName:fushuai*/
                 <View style={styles.groupstyle}>
                     <Text style={styles.orders}>订单号： {_data.OrderID}</Text>
                     <Text style={styles.orders}>预定时间： {moment(_data.AddTime).format('YYYY-MM-DD HH:mm') }</Text>
-                    <Text style={[styles.hotelStyle,styles.orders]}>{_data.HotelNameCN+'('+_data.HotelNameGB+')' }</Text>
+                    <Text style={styles.hotelStyle}>{_data.HotelNameCN+'('+_data.HotelNameGB+')' }</Text>
                 </View>
                 <View style={styles.groupstyle}>
                     <View style={{flexDirection: 'row',width:width*0.9,justifyContent:'space-between' }}>
-                        <Text style={[styles.roomStyle]}>{_data.SellRoomNameCN+'('+_data.SellRoomNameGB+')'}</Text>
+                        <Text style={[styles.orderitem,{flexWrap:'wrap',width:width*0.8}]}>{_data.SellRoomNameCN+'('+_data.SellRoomNameGB+')'}</Text>
                         <Text style={[styles.orderitem]}> {_data.Rooms} 间</Text>
                     </View>
                     <View style={{flexDirection: 'row',width:width*0.9,justifyContent:'space-between'}}>
@@ -132,10 +147,7 @@ UserName:fushuai*/
                     </View>
                 </View>
                 {this.renderStatus(_data.Status,_data.OrderID)}
-                {/*<View style={[styles.orderinfo,]}>*/}
-                    {/*<Text style={[styles.orderstate,{flex:1}]}>未发单到酒店</Text>*/}
-                    {/*<Text style={[styles.orderstate,styles.pushorder]}>已发</Text>*/}
-                {/*</View>*/}
+
             </View>
             </View>
         );
@@ -294,7 +306,6 @@ const styles = StyleSheet.create({
         width:width,
         paddingTop:5,paddingBottom:10,
         paddingLeft:20,paddingRight:20,
-
         backgroundColor:'white',
         alignItems: 'flex-start',
     },
@@ -306,21 +317,31 @@ const styles = StyleSheet.create({
         height:35,
 
     },
+
+    hotelStyle:{
+        fontSize:14,
+        fontWeight: 'bold',
+        flexWrap:'wrap',
+        color:'#110418',
+        marginTop:5,
+    },
     hotelroom:{
         fontSize:14,
         fontWeight: 'bold',
         flexWrap:'wrap',
+        marginTop:5,
+        color:'#000000',
     },
     orderinfo:{
         flexDirection: 'row',
     },
     orderitem:{
       marginTop:5,
-        marginBottom:5,
+        color:'#000000',
     },
     orders:{
         marginTop:5,
-        marginBottom:5,
+        color:'#000000'
     },
     textsStyle:{
         alignSelf:'center',
