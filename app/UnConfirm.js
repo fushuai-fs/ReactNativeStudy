@@ -11,7 +11,8 @@ import {
     FlatList,
     ActivityIndicator,
     ScrollView,
-    RefreshControl
+    RefreshControl,
+    ToastAndroid
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome'
 var JSON5 = require('json5');
@@ -66,7 +67,7 @@ export default class UnConfirm extends Component<{}> {
         var supplierCode=this.props.navigation.state.params.SupplierCode;
         var userName=this.props.navigation.state.params.UserName;
         var oStatus=this.props.OrderStatus;
-        // alert('Method=OrderList&SupplierCode='+supplierCode+'&UserName='+userName+"&Status="+oStatus);
+         // alert('Method=OrderList&SupplierCode='+supplierCode+'&UserName='+userName+"&Status="+oStatus);
         //请求数据
         this.fetchData(supplierCode,userName,oStatus);
         //需要加载 待处理订单条数
@@ -111,6 +112,7 @@ export default class UnConfirm extends Component<{}> {
                     error: true,
                     errorInfo: error
                 })
+                ToastAndroid.show(error,ToastAndroid.SHORT);
             })
             .done();
     }
@@ -145,7 +147,6 @@ export default class UnConfirm extends Component<{}> {
         return (
             <View  style={{
                 borderBottomWidth:1,
-                opacity:0.5
             }} >
                 <TouchableOpacity onPress={()=>this.cellAction(item)}>
                     <CommonCell Data={item}/>
@@ -195,7 +196,8 @@ export default class UnConfirm extends Component<{}> {
 
         // alert(this.state.dataStrArr);
         return (
-            <View style={styles.container} >
+            <View style={{ flex: 1,
+                alignItems: 'center',}}>
                 <ScrollView style={{flex:1}} refreshControl={
                     <RefreshControl
                         refreshing={this.state.refreshing}

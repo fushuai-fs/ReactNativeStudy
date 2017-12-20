@@ -102,10 +102,10 @@ UserName:fushuai*/
         var _data=this.state.dataArray;
        // orderContent='订单号：'+_data.OrderID+'\r\n';
         orderContent+=_data.HotelNameCN+'('+_data.HotelNameGB+') \r\n';
-        orderContent+='预定时间：'+moment(_data.AddTime).format('YYYY-MM-DD HH:mm')+'\r\n';
-        orderContent+=_data.SellRoomNameCN+'()'+'\t'+_data.Rooms+'间 \r\n';
-        orderContent+=moment(_data.CheckIn).format('YYYY-MM-DD')+' 至 '+moment(_data.CheckOut).format('YYYY-MM-DD')+'\t\t'+moment(_data.CheckOut).diff(moment(_data.CheckIn), 'days')+'晚 \r\n' ;
-        orderContent+='入住人：'+_data.Guest+'\t\t'+_data.GuestNumber+' \r\n';
+        orderContent+='预订时间：'+moment(_data.AddTime).format('YYYY-MM-DD HH:mm')+'\r\n';
+        orderContent+=_data.SellRoomNameCN+'('+_data.BedType+')('+_data.MealType+')'+'\t'+_data.Rooms+' 间 \r\n';
+        orderContent+=moment(_data.CheckIn).format('YYYY-MM-DD')+' 至 '+moment(_data.CheckOut).format('YYYY-MM-DD')+'\t\t'+moment(_data.CheckOut).diff(moment(_data.CheckIn), 'days')+' 晚 \r\n' ;
+        orderContent+='入住人：'+_data.Guest+'\t\t'+_data.GuestNumber+' 人 \r\n';
 
         Clipboard.setString(orderContent);
         ToastAndroid.show('复制成功',ToastAndroid.SHORT);
@@ -129,12 +129,12 @@ UserName:fushuai*/
                 {/*</View>*/}
                 <View style={styles.groupstyle}>
                     <Text style={styles.orders}>订单号： {_data.OrderID}</Text>
-                    <Text style={styles.orders}>预定时间： {moment(_data.AddTime).format('YYYY-MM-DD HH:mm') }</Text>
+                    <Text style={styles.orders}>预订时间： {moment(_data.AddTime).format('YYYY-MM-DD HH:mm') }</Text>
                     <Text style={styles.hotelStyle}>{_data.HotelNameCN+'('+_data.HotelNameGB+')' }</Text>
                 </View>
                 <View style={styles.groupstyle}>
                     <View style={{flexDirection: 'row',width:width*0.9,justifyContent:'space-between' }}>
-                        <Text style={[styles.orderitem,{flexWrap:'wrap',width:width*0.8}]}>{_data.SellRoomNameCN+'('+_data.SellRoomNameGB+')'}</Text>
+                        <Text style={[styles.orderitem,{flexWrap:'wrap',width:width*0.8}]}>{_data.SellRoomNameCN+'('+_data.BedType+')('+_data.MealType+')'}</Text>
                         <Text style={[styles.orderitem]}> {_data.Rooms} 间</Text>
                     </View>
                     <View style={{flexDirection: 'row',width:width*0.9,justifyContent:'space-between'}}>
@@ -143,7 +143,7 @@ UserName:fushuai*/
                     </View>
                     <View style={{flexDirection: 'row',width:width*0.9,justifyContent:'space-between'}}>
                         <Text style={[styles.orderitem,{flexWrap:'wrap',width:width*0.8}]}>{_data.Guest}</Text>
-                        <Text style={[styles.orderitem]}> {_data.GuestNumber}人</Text>
+                        <Text style={[styles.orderitem]}> {_data.GuestNumber} 人</Text>
                     </View>
                 </View>
                 {this.renderStatus(_data.Status,_data.OrderID)}
@@ -298,7 +298,7 @@ UserName:fushuai*/
 const styles = StyleSheet.create({
     groupstyle:{
         borderBottomWidth:1,
-        opacity:0.5,
+        // opacity:0.5,
         width:width*0.9,
         paddingTop:5,paddingBottom:10,
     },
@@ -346,7 +346,7 @@ const styles = StyleSheet.create({
     textsStyle:{
         alignSelf:'center',
         fontSize:18,
-        color:'blue',
+        color:'#2fa4e7',
         padding:5,
          // backgroundColor:'red'
     },
@@ -362,7 +362,7 @@ const styles = StyleSheet.create({
    styleButton:{
        borderWidth:1,
        borderRadius:5,
-       borderColor:'blue',
+       borderColor:'#2fa4e7',
        justifyContent:'center',
        alignItems:'center',
        margin:5,

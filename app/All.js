@@ -13,7 +13,8 @@ import {
     ActivityIndicator,
     ScrollView,
     Button,
-    RefreshControl
+    RefreshControl,
+    ToastAndroid
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome'
 var JSON5 = require('json5');
@@ -149,6 +150,7 @@ UserName:fushuai*/
                     refreshing: false,
                     errorInfo: error
                 })
+                ToastAndroid.show(error,ToastAndroid.SHORT)
             })
             .done();
     }
@@ -182,7 +184,6 @@ UserName:fushuai*/
         return (
             <View  style={{
                 borderBottomWidth:1,
-                opacity:0.5
             }} >
             <TouchableOpacity onPress={()=>this.cellAction(item)}>
                 <CommonCell Data={item}/>
@@ -304,7 +305,7 @@ UserName:fushuai*/
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor:'#dddddd',
+        // backgroundColor:'#dddddd',
         alignItems: 'center',
     },
     orderItems:{

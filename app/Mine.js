@@ -39,7 +39,7 @@ export default class Mine extends Component<{}> {
     constructor(props) {
         super(props);
         this.state = {
-            currentVersion:'0.0.2',
+            currentVersion:'0.0.3',
             currentTextDesc:'已是最新版本',
             isCheck:false,
 
@@ -100,7 +100,7 @@ export default class Mine extends Component<{}> {
                         Alert.alert('温馨提醒','检测到有新版本是否更新?',[
                             {text:'否',onPress:()=>{
                                 this.setState({
-                                currentTextDesc: '检测到有新版本',
+                                currentTextDesc: '检测到有新版本',isCheck: false
                             });}},
                             {text:'是',onPress:()=> {
                                 NativeModules.UpgradeModule.upgrade(responseData.downloadUrl);

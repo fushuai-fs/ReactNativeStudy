@@ -10,8 +10,10 @@ import {
     Image,TouchableOpacity
 
 } from 'react-native';
+
+import { NavigationActions } from 'react-navigation'
 // var JSON5 = require('json5');
-import { StackNavigator,} from 'react-navigation';
+// import { StackNavigator,} from 'react-navigation';
 
 
  // import Main from './app/Main.js';
@@ -58,7 +60,7 @@ export default class Login extends Component<{}> {
     constructor (props) {
         super (props)
         this.state = {
-            SupplierCode:'63967667',//25887708   63967667
+            SupplierCode:'25887708',//25887708   63967667
             UserName: 'fushuai',
             Password: 'fushuai',
             loaded: false,
@@ -108,7 +110,7 @@ export default class Login extends Component<{}> {
                     </View>
                 </TouchableOpacity>
                 <View>
-                    <Text style={{color:'red'}}>{this.state.loginDesc}</Text>
+                    <Text style={{color:'#c00'}}>{this.state.loginDesc}</Text>
                 </View>
                 <TouchableOpacity onPress={()=>this.LoginMethod()}>
                 <View style={ styles.setingViewStyle }>
@@ -123,6 +125,7 @@ export default class Login extends Component<{}> {
     }
 
     renderPress=(navigate)=>{
+
         // Alert.alert('tltle','msg');
         // fetch 返回结果最好使用json
        var _navigate= navigate; // 作用域问题定义变量
@@ -153,7 +156,7 @@ export default class Login extends Component<{}> {
               {
                     // this.setState({logined:true});
                   // _navigate.dispatch(resetAction);
-                  _navigate('MyApp',{SupplierCode:supplierCode,UserName:userName,backBehavior:'none'});
+                 _navigate('MyApp',{SupplierCode:supplierCode,UserName:userName,backBehavior:'none'});
               } else
               {
                   this.setState({
@@ -170,7 +173,13 @@ export default class Login extends Component<{}> {
             });
     }
 
-
+    componentDidMount(){
+      // var  resetAction = NavigationActions.reset({
+      //       index: 0,
+      //
+      //   });
+        // this.props.navigation.dispatch(resetAction);
+    }
 }
 
 const styles = StyleSheet.create({
