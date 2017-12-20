@@ -39,7 +39,7 @@ export default class Mine extends Component<{}> {
     constructor(props) {
         super(props);
         this.state = {
-            currentVersion:'0.0.3',
+            currentVersion:'0.0.32',
             currentTextDesc:'已是最新版本',
             isCheck:false,
 

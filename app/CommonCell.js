@@ -49,6 +49,9 @@ export default class CommonCell extends Component<{}> {
                     <Text style={{color:'#000000',flex:1}}>订单号{_data.OrderID}</Text>
                     <Text style={{color:'orange'}}>CNY{_data.Payments}</Text>
                 </View>
+                <View>
+                    <Text>{moment(_data.AddTime).format('YYYY-MM-DD HH:mm:ss')}</Text>
+                </View>
                 {/*<View style={[styles.orderinfo,]}>*/}
                     {/*<Text style={[styles.orderstate,{flex:1}]}>未发单到酒店</Text>*/}
                     {/*<Text style={[styles.orderstate,styles.pushorder]}>已发</Text>*/}
