@@ -42,7 +42,7 @@ const MyAppTab = TabNavigator({
       initialRouteName:'Login',
       title:'',
       headerMode: 'none',
-      backBehavior:'none',
+      // backBehavior:'none',
       gesturesEnabled:false
       }
   )
