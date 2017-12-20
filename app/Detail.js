@@ -102,7 +102,7 @@ UserName:fushuai*/
         var _data=this.state.dataArray;
        // orderContent='订单号：'+_data.OrderID+'\r\n';
         orderContent+=_data.HotelNameCN+'('+_data.HotelNameGB+') \r\n';
-        orderContent+='预订时间：'+moment(_data.AddTime).format('YYYY-MM-DD HH:mm')+'\r\n';
+        orderContent+='预订时间：'+moment(_data.AddTime).format('YYYY-MM-DD HH:mm:ss')+' \r\n';
         orderContent+=_data.SellRoomNameCN+'('+_data.BedType+')('+_data.MealType+')'+'\t'+_data.Rooms+' 间 \r\n';
         orderContent+=moment(_data.CheckIn).format('YYYY-MM-DD')+' 至 '+moment(_data.CheckOut).format('YYYY-MM-DD')+'\t\t'+moment(_data.CheckOut).diff(moment(_data.CheckIn), 'days')+' 晚 \r\n' ;
         orderContent+='入住人：'+_data.Guest+'\t\t'+_data.GuestNumber+' 人 \r\n';
@@ -129,7 +129,7 @@ UserName:fushuai*/
                 {/*</View>*/}
                 <View style={styles.groupstyle}>
                     <Text style={styles.orders}>订单号： {_data.OrderID}</Text>
-                    <Text style={styles.orders}>预订时间： {moment(_data.AddTime).format('YYYY-MM-DD HH:mm') }</Text>
+                    <Text style={styles.orders}>预订时间： {moment(_data.AddTime).format('YYYY-MM-DD HH:mm:ss') }</Text>
                     <Text style={styles.hotelStyle}>{_data.HotelNameCN+'('+_data.HotelNameGB+')' }</Text>
                 </View>
                 <View style={styles.groupstyle}>
