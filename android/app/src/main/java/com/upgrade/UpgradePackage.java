@@ -5,11 +5,11 @@ import com.facebook.react.bridge.JavaScriptModule;
 import com.facebook.react.bridge.NativeModule;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.uimanager.ViewManager;
+import com.rnapp.LoginModule;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
 /**
  * Created by Song on 2017/7/10.
  */
@@ -31,6 +31,7 @@ public class UpgradePackage implements ReactPackage{
     public List<NativeModule> createNativeModules(ReactApplicationContext reactContext) {
         List<NativeModule> modules = new ArrayList<>();
         modules.add(new UpgradeModule(reactContext));
+        modules.add(new LoginModule(reactContext));
         return modules;
     }
 }

@@ -7,8 +7,9 @@ import {
     Text,
     TextInput,
     View,
-    Image,TouchableOpacity
-
+    Image,
+    TouchableOpacity,
+    NativeModules
 } from 'react-native';
 
 import { NavigationActions } from 'react-navigation'
@@ -61,8 +62,8 @@ export default class Login extends Component<{}> {
         super (props)
         this.state = {
             SupplierCode:'63967667',//25887708   63967667
-            UserName: '',
-            Password: '',
+            UserName: 'fushuai',
+            Password: 'fushuai',
             loaded: false,
             loginText:'登 录',
             loginDesc:'',
@@ -157,6 +158,8 @@ export default class Login extends Component<{}> {
               {
                     // this.setState({logined:true});
                   // _navigate.dispatch(resetAction);
+                  NativeModules.LoginModule.login(supplierCode,userName,password);
+
                  _navigate('MyApp',{SupplierCode:supplierCode,UserName:userName,backBehavior:'none'});
               } else
               {
@@ -166,7 +169,7 @@ export default class Login extends Component<{}> {
               }
             })
             .catch((error) => {
-                 //alert(error);
+                 alert(error);
                 this.setState({
                     loginText:'登 录',
                     loginDesc:'网络繁忙请稍后再试......',
@@ -175,6 +178,20 @@ export default class Login extends Component<{}> {
     }
 
     componentDidMount(){
+        NativeModules.LoginModule.checkLogin((isLogin,msg)=>{
+            // alert(isLogin+'---'+msg);
+        },
+            (isLogin,Supplier,UserName)=>{
+                // alert(isLogin+'---'+Supplier+'---'+UserName);
+                if(isLogin){
+                    this.setState({
+                        SupplierCode:Supplier,
+                        UserName:UserName
+                    });
+                    const { navigate } = this.props.navigation;
+                    this.renderPress(navigate);
+                }
+            });
       // var  resetAction = NavigationActions.reset({
       //       index: 0,
       //

@@ -29,7 +29,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
     /* 初始化数据  */
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL("create table account(_id integer primary key autoincrement,UserName varchar(20),Phone varchar(20),Password varchar(50) ) ");
+        db.execSQL("create table account(_id integer primary key autoincrement,Supplier varchar(20),UserName varchar(20),Password varchar(50),Status int ) ");
     }
 
     /*  升级操作 */
