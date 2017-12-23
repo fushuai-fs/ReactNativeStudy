@@ -308,6 +308,7 @@ const styles = StyleSheet.create({
         paddingLeft:20,paddingRight:20,
         backgroundColor:'white',
         alignItems: 'flex-start',
+        alignSelf:'center'
     },
     titlestyle:{
         flexDirection: 'row',
