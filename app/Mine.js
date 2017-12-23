@@ -102,6 +102,7 @@ export default class Mine extends Component<{}> {
     testView(){
        this.setState({ searchfor:true });
     }
+
     exitLogin(){
         // alert(this.state.UserName);
         Alert.alert('温馨提醒','是否退出?',[
