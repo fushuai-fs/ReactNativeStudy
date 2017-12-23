@@ -42,7 +42,8 @@ export default class Mine extends Component<{}> {
             currentVersion:'0.0.33',
             currentTextDesc:'已是最新版本',
             isCheck:false,
-
+            searchfor:false,
+            UserName:'',
         }
     }
     render() {
@@ -67,12 +68,20 @@ export default class Mine extends Component<{}> {
                             {this.state.currentTextDesc}
                         </Text>
                     </TouchableOpacity>
-                    <TouchableOpacity  style={styles.itemsStyle} onPress={()=>this.exitLogin()}>
+
+                    <TouchableOpacity  style={[styles.itemsStyle,{justifyContent:'center'}]} onPress={()=>this.exitLogin()}>
                         <Text style={styles.textsStyle}>
                             退出登陆
                         </Text>
                     </TouchableOpacity>
 
+                    {/*{this.Searchfor()}*/}
+
+                    {/*<TouchableOpacity  style={[styles.itemsStyle,{justifyContent:'center'}]} onPress={()=>this.testView()}>*/}
+                        {/*<Text style={styles.textsStyle}>*/}
+                            {/*测试*/}
+                        {/*</Text>*/}
+                    {/*</TouchableOpacity>*/}
                     {/*<View style={styles.cellStyle}>*/}
                     {/*</View>*/}
                 </View>
@@ -80,7 +89,21 @@ export default class Mine extends Component<{}> {
             </View>
         );
     }
+    Searchfor(){
+        if(this.state.searchfor)
+        {
+            return(
+                <View>
+                    <TextInput onChangeText={(text)=>{this.state.UserName = text }}/>
+                </View>
+            );
+        }
+    }
+    testView(){
+       this.setState({ searchfor:true });
+    }
     exitLogin(){
+        // alert(this.state.UserName);
         Alert.alert('温馨提醒','是否退出?',[
             {text:'否'},
             {text:'是',onPress:()=> {

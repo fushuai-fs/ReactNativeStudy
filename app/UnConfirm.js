@@ -96,10 +96,10 @@ export default class UnConfirm extends Component<{}> {
         })
             .then((response) => response.json())
             .then((responseData) => {
-                //  alert(JSON5.stringify(responseData.rows));
+                // alert(JSON5.stringify(responseData.rows));
                 this.setState({
                     //复制数据源
-                  //  dataStrArr:JSON5.stringify(responseData.rows),
+                    // dataStrArr:JSON5.stringify(responseData),
                     dataArray: responseData.rows,
                     isLoading: false,
                     refreshing: false,

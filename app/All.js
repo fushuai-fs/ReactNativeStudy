@@ -61,13 +61,15 @@ import Detail from "./Detail";
             error: false,
             errorInfo: "",
             dataArray: null,
-            dataStrArr:'',
-            tag:'',
+            // dataStrArr:'',
             OrderID:'',
             SupplierCode:'',
             UserName: '',
             OrderStatus:'',
             refreshing: false,
+            pageNo:0,// 页码
+            totalPage:0,// 总页数
+            loadText:'点击加载更多...',
             // clickParams:null
         }
     }
@@ -89,7 +91,7 @@ import Detail from "./Detail";
           var oStatus='';
           // alert('Method=OrderList&SupplierCode='+supplierCode+'&UserName='+userName+"&Status="+oStatus);
           //请求数据
-           this.fetchData(supplierCode,userName,oStatus);
+           this.fetchData(supplierCode,userName,oStatus,1);
           // this.setState({
           //     //复制数据源
           //     isLoading: false,
@@ -108,13 +110,13 @@ import Detail from "./Detail";
           var supplierCode=this.state.SupplierCode;
           var userName=this.state.UserName;
           var oStatus='';
-          this.fetchData(supplierCode,userName,oStatus);
+          this.fetchData(supplierCode,userName,oStatus,1);
           // fetchData().then(() => {
           //     this.setState({refreshing: false});
           // });
       }
     //网络请求
-    fetchData(supplierCode,userName,oStatus) {
+    fetchData(supplierCode,userName,oStatus,pageNo) {
      //   var supplierCode=this.state.SupplierCode; var userName=this.state.UserName;var oStatus=this.state.OrderStatus;
         // var supplierCode=this.props.SupplierCode; var userName=this.props.UserName;var oStatus=this.props.OrderStatus;
         // alert('Method=OrderList&SupplierCode='+supplierCode+'&UserName='+userName+"&Status="+oStatus);
@@ -129,15 +131,17 @@ import Detail from "./Detail";
 Method:OrderList
 Status:1
 UserName:fushuai*/
-            body:'Method=OrderList&SupplierCode='+supplierCode+'&UserName='+userName+"&Status="+oStatus
+            body:'Method=OrderList&SupplierCode='+supplierCode+'&UserName='+userName+"&Status="+oStatus+"&pageSize=10"+"&pages="+pageNo
         })
             .then((response) => response.json())
             .then((responseData) => {
-                 // alert(JSON5.stringify(responseData.rows));
+                  // alert(JSON5.stringify(responseData));
                 this.setState({
                     //复制数据源
                     // dataStrArr:JSON5.stringify(responseData.rows),
                     dataArray: responseData.rows,
+                    totalPage:responseData.total,
+                    loadText:'点击加载更多...',
                     isLoading: false,
                     refreshing: false
                 });
@@ -240,7 +244,11 @@ UserName:fushuai*/
                            data = {this.state.dataArray} //数据源
                            renderItem = {(item) => this.renderItemView(item)} //每一行render
                            keyExtractor={this.keyExtractor}  //使用json中的title动态绑定key
+
                      />
+                <TouchableOpacity onPress={()=>this.loadMore()}>
+                    <Text style={{alignSelf:'center'}}>{this.state.loadText}</Text>
+                </TouchableOpacity>
             </ScrollView>
             </View>
         );
@@ -252,6 +260,30 @@ UserName:fushuai*/
         return item.OrderID
     }
 
+
+      loadMore(){
+          var pageNo =this.state.pageNo;
+          var totalPage=this.state.totalPage;
+          //如果是正在加载中或没有更多数据了，则返回
+          if(this.state.loadText =='正在加载...' || this.state.loadText =='正在拼命加载...'){
+              this.setState({ loadText:'正在拼命加载...'});
+              return ;
+          }
+          //如果当前页大于或等于总页数，那就是到最后一页了，返回
+          if((pageNo!=1) && (pageNo>=totalPage)){
+              return;
+          } else {
+              pageNo++;
+          }
+          //底部显示正在加载更多数据
+          this.setState({ loadText:'正在加载...'});
+          alert(pageNo);
+          //获取数据
+          var supplierCode=this.state.SupplierCode;
+          var userName=this.state.UserName;
+          var oStatus=this.props.IsManual;
+           this.fetchData(supplierCode,userName,oStatus, pageNo);
+      }
       // renderDetail(SupplierCode,UserName,OrderID) {
       //     // alert(this.props.SupplierCode)// alert(SupplierCode+'--'+UserName+'--'+this.state.OrderID);
       //     return (

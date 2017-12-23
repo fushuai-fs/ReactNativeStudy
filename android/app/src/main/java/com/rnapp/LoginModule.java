@@ -53,7 +53,7 @@ public class LoginModule extends ReactContextBaseJavaModule {
     public  void  exitLogin(){
 
         SQLiteDatabase db = myHelper.getWritableDatabase();
-        db.delete("account","Status",new String[]{"1"});
+        db.delete("account","Status=?",new String[]{"1"});
         db.close();
     }
 
@@ -76,7 +76,7 @@ public class LoginModule extends ReactContextBaseJavaModule {
                 UserName=cursor.getString(UserNameIndex);
                 int PasswordIndex =cursor.getColumnIndex("Password");
                 Password=cursor.getString(PasswordIndex);
-               db.delete("account","Status",new String[]{"1"});
+               db.delete("account","Status=?",new String[]{"1"});
 //                Toast.makeText(context,"Supplier="+Supplier+"；UserName="+UserName,Toast.LENGTH_SHORT).show();
 
             }
