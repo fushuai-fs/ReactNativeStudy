@@ -67,6 +67,11 @@ export default class Mine extends Component<{}> {
                             {this.state.currentTextDesc}
                         </Text>
                     </TouchableOpacity>
+                    <TouchableOpacity  style={styles.itemsStyle} onPress={()=>this.exitLogin()}>
+                        <Text style={styles.textsStyle}>
+                            退出登陆
+                        </Text>
+                    </TouchableOpacity>
 
                     {/*<View style={styles.cellStyle}>*/}
                     {/*</View>*/}
@@ -75,6 +80,15 @@ export default class Mine extends Component<{}> {
             </View>
         );
     }
+    exitLogin(){
+        Alert.alert('温馨提醒','是否退出?',[
+            {text:'否'},
+            {text:'是',onPress:()=> {
+                NativeModules.LoginModule.exitLogin();
+                this.props.navigation.navigate("Login");
+            }}]);
+    }
+
     checkVersion() {
         if (this.state.isCheck === false) {
             this.setState({

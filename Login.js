@@ -181,12 +181,13 @@ export default class Login extends Component<{}> {
         NativeModules.LoginModule.checkLogin((isLogin,msg)=>{
             // alert(isLogin+'---'+msg);
         },
-            (isLogin,Supplier,UserName)=>{
+            (isLogin,Supplier,UserName,Password)=>{
                 // alert(isLogin+'---'+Supplier+'---'+UserName);
                 if(isLogin){
                     this.setState({
                         SupplierCode:Supplier,
-                        UserName:UserName
+                        UserName:UserName,
+                        Password:Password
                     });
                     const { navigate } = this.props.navigation;
                     this.renderPress(navigate);

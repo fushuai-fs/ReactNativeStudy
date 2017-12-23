@@ -49,15 +49,22 @@ public class LoginModule extends ReactContextBaseJavaModule {
             Toast.makeText(context,"login"+e.toString(),Toast.LENGTH_SHORT).show();
         }
     }
+    @ReactMethod
+    public  void  exitLogin(){
+
+        SQLiteDatabase db = myHelper.getWritableDatabase();
+        db.delete("account","Status",new String[]{"1"});
+        db.close();
+    }
 
     @ReactMethod
     public void checkLogin(Callback errorCallback, Callback successCallback) {
 
         Boolean isLogin = false;
-        String Supplier="";String UserName="";
+        String Supplier="";String UserName=""; String Password="";
         try {
-            SQLiteDatabase db = myHelper.getReadableDatabase();
-            Cursor cursor = db.query("account", new String[]{"Supplier","UserName"}, "Status=?", new String[]{"1"}, null, null, null);
+            SQLiteDatabase db = myHelper.getWritableDatabase();
+            Cursor cursor = db.query("account", new String[]{"Supplier","UserName","Password"}, "Status=?", new String[]{"1"}, null, null, null);
             if (cursor != null && cursor.getCount() != 0) {
                 cursor.moveToNext();
                 isLogin=true;
@@ -67,11 +74,13 @@ public class LoginModule extends ReactContextBaseJavaModule {
                 Supplier=cursor.getString(SupplierIndex);
                 int UserNameIndex =cursor.getColumnIndex("UserName");
                 UserName=cursor.getString(UserNameIndex);
-//                db.delete("account","Status",new String[]{"1"});
+                int PasswordIndex =cursor.getColumnIndex("Password");
+                Password=cursor.getString(PasswordIndex);
+               db.delete("account","Status",new String[]{"1"});
 //                Toast.makeText(context,"Supplier="+Supplier+"；UserName="+UserName,Toast.LENGTH_SHORT).show();
 
             }
-            successCallback.invoke(isLogin,Supplier,UserName);
+            successCallback.invoke(isLogin,Supplier,UserName,Password);
         } catch (Exception e) {
             errorCallback.invoke(isLogin,e.getMessage());
         }
