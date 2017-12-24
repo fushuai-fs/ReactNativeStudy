@@ -8,9 +8,10 @@ import {
     TextInput,
     View,
     Image,
-    TouchableOpacity
-    ,NativeModules
-,ToastAndroid
+    TouchableOpacity,
+    NativeModules,
+    ToastAndroid,
+    NetInfo
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome'
 var JSON5 = require('json5');
@@ -44,6 +45,7 @@ export default class Mine extends Component<{}> {
             isCheck:false,
             searchfor:false,
             UserName:'',
+            // connectionInfo:null,
         }
     }
     render() {
@@ -135,6 +137,17 @@ export default class Mine extends Component<{}> {
 
                     if(responseData.IsUpgrade){
                         // alert(responseData.downloadUrl);
+                        // 添加检测网络状态
+                        //检测网络连接信息
+                        var connInfo='';
+                        NetInfo.fetch().done(
+                            // (connectionInfo) => { this.setState({connectionInfo}); }
+                            (connectionInfo)=>{connInfo=connectionInfo}
+                        );
+                        if(connInfo=='WIFI'){
+                            // 非fiwi环境是否更新 ， 可以在此处加检测
+                        }
+
                         Alert.alert('温馨提醒','检测到有新版本是否更新?',[
                             {text:'否',onPress:()=>{
                                 this.setState({
@@ -147,6 +160,8 @@ export default class Mine extends Component<{}> {
                                     isCheck: false
                                 });
                             }}]);
+
+
                     }
                     else {
                         this.setState({
