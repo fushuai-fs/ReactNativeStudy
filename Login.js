@@ -61,9 +61,9 @@ export default class Login extends Component<{}> {
     constructor (props) {
         super (props)
         this.state = {
-            SupplierCode:'63967667',//25887708   63967667
-            UserName: 'fushuai',
-            Password: 'fushuai',
+            SupplierCode:'63967667',//    63967667
+            UserName: '',
+            Password: '',
             loaded: false,
             loginText:'登 录',
             loginDesc:'',
