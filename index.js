@@ -34,8 +34,6 @@ const MyAppTab = TabNavigator({
 // 导航
   const App = StackNavigator({
       Login : { screen: Login },
-     // Main : { screen: Main },
-      // All:{ screen:All },
         Detail:{ screen:Detail },
       MyApp:{ screen:MyAppTab }
       },{

@@ -89,46 +89,7 @@ export default  class Main extends Component<{}> {
         return (
             <View style={styles.container}>
 
-                {/*<TabNavigator style={{width:deviceW}}*/}
-                              {/*tintColor='orange'*/}
-                {/*>*/}
-                    {/*<TabNavigator.Item*/}
-                        {/*title="所有订单"*/}
-                    {/*selected={this.state.selectedTab === 'all'}*/}
-                    {/*selectedTitleStyle={{color: "#014af0"}}*/}
-                    {/*renderIcon={() => <Icon name="home" size={px2dp(15)} color="#666"/>}*/}
-                    {/*renderSelectedIcon={() => <Icon name="home" size={px2dp(10)} color="#3496f0"/>}*/}
-                    {/*badgeText=""*/}
-                    {/*onPress={() => this.renderfun(navigate,'all') }>*/}
 
-                        {/*<StackNavigator Profile={{screen:All,*/}
-                            {/*navigationOptions:()=>({*/}
-                                {/*SupplierCode:this.state.SupplierCode,UserName:this.state.UserName,*/}
-                        {/*})}} headerTitle ='订单列表' />*/}
-                     {/*/!*<All SupplierCode={this.state.SupplierCode} UserName={this.state.UserName}/>*!/*/}
-                {/*</TabNavigator.Item>*/}
-                {/*<TabNavigator.Item*/}
-                    {/*selected={this.state.selectedTab === 'UnConfirm'}*/}
-                    {/*title="UnConfirm"*/}
-                    {/*selectedTitleStyle={{color: "#014af0"}}*/}
-                    {/*renderIcon={() => <Icon name="th-list" size={px2dp(15)} color="#666"/>}*/}
-                    {/*renderSelectedIcon={() => <Icon name="th-list" size={px2dp(10)} color="#3496f0"/>}*/}
-                    {/*badgeText={this.state.unConfirmNum}*/}
-                    {/*onPress={() => this.setState({selectedTab: 'UnConfirm'})}>*/}
-                    {/*<UnConfirm/>*/}
-                {/*</TabNavigator.Item>*/}
-                {/*<TabNavigator.Item*/}
-                    {/*selected={this.state.selectedTab === 'Mine'}*/}
-                    {/*title="Mine"*/}
-                    {/*selectedTitleStyle={{color: "#014af0"}}*/}
-                    {/*renderIcon={() => <Icon name="user" size={px2dp(15)} color="#666"/>}*/}
-                    {/*renderSelectedIcon={() => <Icon name="user" size={px2dp(10)} color="#3496f0"/>}*/}
-                    {/*badgeText=""*/}
-                    {/*onPress={() => this.setState({selectedTab: 'Mine'})}>*/}
-
-                    {/*<Mine/>*/}
-                {/*</TabNavigator.Item>*/}
-                {/*</TabNavigator>*/}
 
             </View>
         );

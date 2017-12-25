@@ -12,20 +12,6 @@ import {
     NativeModules
 } from 'react-native';
 
-import { NavigationActions } from 'react-navigation'
-// var JSON5 = require('json5');
-// import { StackNavigator,} from 'react-navigation';
-
-
- // import Main from './app/Main.js';
-
-// const instructions = Platform.select({
-//     ios: 'Press Cmd+R to reload,\n' +
-//     'Cmd+D or shake for dev menu',
-//     android: 'Double tap R on your keyboard to reload,\n' +
-//     'Shake or press menu button for dev menu',
-// });
-
 // 全局属性
 var GlobalProps = require('./globalProps.json');
 
@@ -36,20 +22,6 @@ var cols =3;
 var boxW=100;
 var vMargin = (width-cols*boxW)/(cols+1);
 var hMargin=25;
-// import Main from './app/Main.js';
-// import All from './app/All.js';
-// import Detail from './app/Detail.js';
-//
-// // 导航
-// const App = StackNavigator({
-//         Main : { screen: Main },
-//         All:{ screen:All },
-//         Detail:{ screen:Detail },
-//     },{
-//         initialRouteName:'Main',
-//         title:'', headerMode: 'none',
-//     }
-// )
 // ES6
 // noinspection JSAnnotator
 export default class Login extends Component<{}> {
@@ -61,7 +33,7 @@ export default class Login extends Component<{}> {
     constructor (props) {
         super (props)
         this.state = {
-            SupplierCode:'63967667',//    63967667
+            SupplierCode:'',
             UserName: '',
             Password: '',
             loaded: false,
@@ -77,17 +49,7 @@ export default class Login extends Component<{}> {
         return (
             <View style={styles.container} >
                 <Image source={require('./image/icon.png')} style={styles.iconStyle }/>
-                {/*<View style={styles.loginStyle}>*/}
-                    {/*<Text  style={[styles.textsStyle] }>{'公司ID'}</Text>*/}
-                    {/*<TextInput ref={'SupplierCode'}*/}
-                               {/*style={styles.textInputStyle }*/}
-                               {/*keyboardType={'numeric'}*/}
-                               {/*placeholde={'公司ID'}*/}
-                               {/*placeholderTextColor="red"*/}
-                               {/*underlineColorAndroid={'transparent'}*/}
-                               {/*onChangeText={(text) => { this.state.SupplierCode = text } }*/}
-                    {/*/>*/}
-                {/*</View>*/}
+
                 <View style={[styles.loginStyle,,{marginTop:5}]}>
                     <Text  style={[styles.textsStyle] }>{'账 号'}</Text>
                     <TextInput ref={'UserName'} placeholde={'账号/手机号'} style={styles.textInputStyle }
@@ -114,11 +76,6 @@ export default class Login extends Component<{}> {
                 <View>
                     <Text style={{color:'#c00'}}>{this.state.loginDesc}</Text>
                 </View>
-                {/*<TouchableOpacity onPress={()=>this.LoginMethod()}>*/}
-                {/*<View style={ styles.setingViewStyle }>*/}
-                    {/*<Text>手机验证码登录</Text>*/}
-                {/*</View>*/}
-                {/*</TouchableOpacity>*/}
             </View>
         );
     }
@@ -127,6 +84,7 @@ export default class Login extends Component<{}> {
     }
 
     renderPress=(navigate)=>{
+        _navigate('MyApp',{SupplierCode:supplierCode,UserName:userName,backBehavior:'none'});
 
         // Alert.alert('tltle','msg');
         // fetch 返回结果最好使用json
@@ -137,44 +95,7 @@ export default class Login extends Component<{}> {
         this.setState({
             loginText:'正在登录...'
         });
-        // alert('Method=Login&SupplierCode='+supplierCode+'&UserName='+userName+'&PassWord='+password);
-          //  var bodys= 'Method=Login&SupplierCode='+supplierCode+'&UserName='+userName+'&PassWord='+password;
-       // alert(GlobalProps.LoginUrl);
-        return fetch(GlobalProps.LoginUrl, {
-            method: 'POST',
-            headers: {
-                 'Accept': 'application/json',
-                'Content-Type': 'application/x-www-form-urlencoded',
-            },
-            body:'Method=Login&SupplierCode='+supplierCode+'&UserName='+userName+'&PassWord='+password
-        })
-          .then((response) => response.json())
-            .then((responsejson)=>{
-                this.setState({
-                    loginText:'登 录'
-                });
-             // alert(JSON.stringify(responsejson));
-              if(responsejson.msg==='')
-              {
-                    // this.setState({logined:true});
-                  // _navigate.dispatch(resetAction);
-                  NativeModules.LoginModule.login(supplierCode,userName,password);
 
-                 _navigate('MyApp',{SupplierCode:supplierCode,UserName:userName,backBehavior:'none'});
-              } else
-              {
-                  this.setState({
-                      loginDesc:responsejson.msg,
-                  });
-              }
-            })
-            .catch((error) => {
-                 alert(error);
-                this.setState({
-                    loginText:'登 录',
-                    loginDesc:'网络繁忙请稍后再试......',
-                });
-            });
     }
 
     componentDidMount(){
